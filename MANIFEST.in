@@ -1,0 +1,2 @@
+recursive-include twirlip/public *
+recursive-include twirlip/templates *
