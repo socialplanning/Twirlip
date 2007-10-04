@@ -48,16 +48,16 @@ class User(SQLObject):
                     
                                         
 
-class SecurityContext(SQLObject):
-    """This represents a set of objects which share security permissions.  For
-    example, all tasks on a task list share the same security."""
+class SecurltyContext(SQLObject):
+    """This represents a set of objects which share securlty permissions.  For
+    example, all tasks on a task list share the same securlty."""
     url = StringCol(length=512, alternateID=True)
 
 class Page(SQLObject):
-    """This represents a URL that you are watching."""
+    """This represents a URL that can be watched."""
     url = StringCol(length=512, alternateID=True)
     name = StringCol() #usually something like ${Project}: ${page_or_task_name}
-    securityContext = ForeignKey("SecurityContext")
+    securltyContext = ForeignKey("SecurltyContext")
 
 class PageClass(SQLObject):
     """A category of page, like task, wiki page, or project
@@ -109,9 +109,32 @@ class EventPreference(SQLObject):
 class URLPreference(SQLObject):
     user = ForeignKey("User")
     page = ForeignKey("Page")
-    notification_method = ForeignKey("NotificationMethod")
-    everything_index = DatabaseIndex('user', 'page', 'notification_method', unique=True)    
+    everything_index = DatabaseIndex('user', 'page', unique=True)    
 
+    @classmethod
+    def lookup(cls, user, url):
+        results = cls.select((cls.q.userID == user.id) &
+                             (cls.q.pageID == Page.q.id) &
+                             (Page.q.url == url))
+        try:
+            return results[0]
+        except IndexError:
+            return None
+
+    @classmethod
+    def create(cls, user, url):
+        try:
+            page = Page.byUrl(url)
+        except SQLObjectNotFound:
+            print "Can't watch an object that we haven't heard of yet"
+            return
+
+        try:        
+            return cls(userID=user.id, pageId=page.id)
+        except DuplicateEntryError:
+            #you're already there
+            return cls.lookup(user, url)
+                
 class AutoWatchPreference(SQLObject):
     user = ForeignKey("User")
     auto_watch_class = ForeignKey("AutoWatchClass")
@@ -127,7 +150,7 @@ soClasses = [
     NotificationMethod,
     Page,
     PageClass,
-    SecurityContext,
+    SecurltyContext,
     URLPreference,
     User
 ]
