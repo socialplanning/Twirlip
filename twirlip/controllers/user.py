@@ -5,7 +5,6 @@ class UserController(BaseController):
 
     @dispatch_on(POST="do_preferences")
     def preferences(self):
-        c.user.init_preferences() #if they aren't already set up
         return render("/preferences.mako")
 
     def do_preferences(self):
@@ -33,3 +32,4 @@ class UserController(BaseController):
 
             
         return redirect_to(action="preferences")
+    

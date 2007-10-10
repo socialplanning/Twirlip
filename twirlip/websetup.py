@@ -22,3 +22,6 @@ def setup_config(command, filename, section, vars):
         table.createTable(ifNotExists=True)
 
     create_defaults()
+
+    print """Now start the application and visit /config to hook
+    Twirlip up to Cabochon"""

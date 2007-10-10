@@ -15,6 +15,8 @@ from paste.wsgiwrappers import WSGIResponse
 import twirlip.lib.helpers as h
 from twirlip.model import *
 
+from simplejson import loads
+
 class BaseController(WSGIController):
 
     def __call__(self, environ, start_response):
@@ -23,12 +25,26 @@ class BaseController(WSGIController):
         # the request is routed to. This routing information is
         # available in environ['pylons.routes_dict']
 
-        username = environ['topp.user_info']['username']
+        controller = environ['pylons.routes_dict']['controller']
+
+        if controller == 'template':
+            return WSGIController.__call__(self, environ, start_response)
+        username = environ['REMOTE_USER']
         if not username:
             return WSGIResponse(content='please log in', code=401)
 
-        c.user = User.get_or_create_user(username)            
-        
+        if environ.get('AUTHENTICATION_METHOD') != 'WSSE':
+            if controller == 'watch':
+                c.user = User.get_or_create(username)
+            elif not (environ.get('REMOTE_ADDR').startswith('127.0.0.1') and controller=='config'):
+                return WSGIResponse(code=403, content='You need to authenticate with wsse')
+            
+        if controller != 'watch':
+            #json
+            self.params = {}
+            for param, value in request.params.items():
+                self.params[param] = loads(value)
+                    
         return WSGIController.__call__(self, environ, start_response)
 
 # Include the '_' function in the public names

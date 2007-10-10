@@ -14,6 +14,7 @@ from twirlip.config.environment import load_environment
 
 from tasktracker.lib.testing_env import TestingEnv
 from tasktracker.lib.cookieauth import CookieAuth
+from wsseauth import WSSEAuthMiddleware
 
 def make_app(global_conf, full_stack=True, **app_conf):
     """Create a Pylons WSGI application and return it
@@ -65,6 +66,11 @@ def make_app(global_conf, full_stack=True, **app_conf):
         
     elif app_conf.get('openplans_wrapper') == 'CookieAuth':
         app = CookieAuth(app, app_conf)
+
+    username = config.get('cabochon_username', None)
+    password = config.get('cabochon_password', None)
+    if username:
+        app = WSSEAuthMiddleware(app, {username : password}, required=False)    
 
     # Static files
     javascripts_app = StaticJavascripts()
