@@ -1,7 +1,9 @@
+from twirlip.lib.sendmail import send_mail
+
 def email(user, page):
     if not user.email:
         return
-    send_mail (user.email, "The page %s has been updated" % page.name)
+    send_mail ('notification@openplans.org', user.email, 'Update notification', "The page %s has been updated" % page.name)
 
 
 notification_methods = {'Email' : email}
