@@ -36,10 +36,15 @@ class BaseController(WSGIController):
         if environ.get('AUTHENTICATION_METHOD') != 'WSSE':
             if controller == 'watch' or controller == 'user':
                 c.user = User.get_or_create(username)
-            elif not (environ.get('REMOTE_ADDR').startswith('127.0.0.1') and controller=='config'):
-                return WSGIResponse(code=403, content='You need to authenticate with wsse')
+            else:
+                if environ.get('REMOTE_ADDR').startswith('127.0.0.1') and controller == 'config':
+                    #local users can configure Twirlip
+                    pass
+                else:
+                    #all other authentication must be by wsse
+                    return WSGIResponse(code=403, content='You need to authenticate with wsse')
             
-        if controller != 'watch':
+        if controller == 'page':
             #json
             self.params = {}
             for param, value in request.params.items():

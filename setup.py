@@ -15,6 +15,7 @@ setup(
     install_requires=["Pylons>=0.9.6.1",
                       "TaskTracker",
                       "CabochonServer",
+                      "simplejson"
                       ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,

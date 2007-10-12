@@ -47,7 +47,6 @@ class PageController(BaseController):
                 continue
             try:
                 pref = AutoWatchPreference.selectBy(auto_watch_class=awc, user=user)[0]
-                print "exists pref", pref
             except IndexError:
                 pass
             URLPreference.create(user, page=page)
@@ -57,6 +56,7 @@ class PageController(BaseController):
 
     @jsonify
     def delete(self):
+        #FIXME: notify on delete
         try:
             page = Page.selectBy(url=self.params['url'])[0]
             page.destroySelf()

@@ -14,6 +14,7 @@ def get_email(username):
     # because of some zope silliness we have to do this as a POST instead of basic auth
     data = {"__ac_name":admin_info[0], "__ac_password":admin_info[1]}
     body = urlencode(data)
+
     resp, content = h.request("%s/people/%s/info.xml" % (server, username), method="POST", body=body, redirections=0)
     
     if resp['status'] != '200':
