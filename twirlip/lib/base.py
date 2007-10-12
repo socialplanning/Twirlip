@@ -34,7 +34,7 @@ class BaseController(WSGIController):
             return WSGIResponse(content='please log in', code=401)
 
         if environ.get('AUTHENTICATION_METHOD') != 'WSSE':
-            if controller == 'watch':
+            if controller == 'watch' or controller == 'user':
                 c.user = User.get_or_create(username)
             elif not (environ.get('REMOTE_ADDR').startswith('127.0.0.1') and controller=='config'):
                 return WSGIResponse(code=403, content='You need to authenticate with wsse')
