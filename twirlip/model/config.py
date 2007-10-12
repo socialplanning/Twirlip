@@ -19,7 +19,7 @@ def create_defaults():
         Task = ['assign', 'comment', 'delete', 'attribute']
         )
 
-    auto_watch_classes = [('task_assigned', 'a task is assigned to you')]
+    auto_watch_classes = [('task_assigned', 'a task is assigned to me')]
 
     for method in notification_methods:
         try:
