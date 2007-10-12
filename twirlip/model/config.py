@@ -52,6 +52,6 @@ def create_defaults():
 
     for name, display in auto_watch_classes:
         try:
-            AutoWatchClass(name=name, display_name=display)
+            AutoWatchClass(name=name, display_name=display, default_on=True)
         except DuplicateEntryError:
             pass

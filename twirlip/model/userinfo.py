@@ -1,6 +1,7 @@
 from pylons import config
 import httplib2
 from urllib import urlencode
+import elementtree.ElementTree as ET
 
 from logging import warn
 
