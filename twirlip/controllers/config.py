@@ -26,6 +26,7 @@ class ConfigController(BaseController):
         installer = ServerInstaller(".servers", config['cabochon_username'], config['cabochon_password'])
         installer.addEvent(config['event_server'], 'create_page', h.url_for(controller='page', action='', qualified=True))
         installer.addEvent(config['event_server'], 'edit_page', h.url_for(controller='page', action='edit', qualified=True))
+        installer.addEvent(config['event_server'], 'delete_page', h.url_for(controller='page', action='delete', qualified=True))        
 
         installer.addEvent(config['event_server'], 'email_changed', h.url_for(controller='page', action='email_changed', qualified=True))
 

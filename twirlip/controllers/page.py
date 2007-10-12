@@ -13,11 +13,11 @@ class PageController(BaseController):
         context = SecurityContext.byUrl(self.params['context'])
         try:
             Page(url=self.params['url'], 
-                 name=self.params['name'],
+                 title=self.params['title'],
                  securityContext=context)
         except DuplicateEntryError:
             page = Page.selectBy(url=self.params['url'])[0]
-            page.set(name = self.params['name'], securityContext = context)
+            page.set(title = self.params['title'], securityContext = context)
             
         return {'status' : 'accepted'}
 
@@ -26,10 +26,10 @@ class PageController(BaseController):
         context = SecurityContext.byUrl(self.params['context'])
         try:
             page = Page.selectBy(url=self.params['url'])[0]
-            page.set(name = self.params['name'], securityContext = context)            
+            page.set(title = self.params['title'], securityContext = context)            
         except IndexError:
             page = Page(url=self.params['url'], 
-                        name=self.params['name'],
+                        title=self.params['title'],
                         securityContext=context)
 
 
@@ -54,6 +54,15 @@ class PageController(BaseController):
         page.notify()
         
         return {'status' : 'accepted'}
+
+    @jsonify
+    def delete(self):
+        try:
+            page = Page.selectBy(url=self.params['url'])[0]
+            page.destroySelf()
+        except IndexError:
+            pass
+        return {'status' : 'accepted'}        
 
     @jsonify
     def email_changed(self):

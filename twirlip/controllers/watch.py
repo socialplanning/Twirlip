@@ -20,4 +20,15 @@ class WatchController(BaseController):
         URLPreference.create(c.user, url=url)
         return redirect_to(url)
         
+    def unwatch(self, id=None):
+        if id:
+            preference = URLPreference.get(id)
+        else:
+            preference = URLPreference.lookup(c.user, request.params['url'])
+
+        assert preference.user == c.user
+        url = preference.url
+        preference.destroySelf()
+        return redirect_to(url)
+        
         

@@ -83,13 +83,19 @@ class SecurityContext(SQLObject):
 class Page(SQLObject):
     """This represents a URL that can be watched."""
     url = StringCol(length=512, alternateID=True)
-    name = StringCol() #usually something like ${Project}: ${page_or_task_name}
+    title = StringCol() #usually something like ${Project}: ${page_or_task_name}
     securityContext = ForeignKey("SecurityContext")
 
     def notify(self):
         for pref in URLPreference.selectBy(page=self):
             user = pref.user
             notify(pref.notification_method.name, user, self)
+
+    def destroySelf(self):
+        for pref in URLPreference.selectBy(page=self):
+            pref.destroySelf()
+        super(Page, self).destroySelf()
+           
 
 class PageClass(SQLObject):
     """A category of page, like task, wiki page, or project
@@ -98,13 +104,13 @@ class PageClass(SQLObject):
     name = StringCol(length=20, alternateID=True)
     event_classes = RelatedJoin('EventClass')
     
-class Association(SQLObject):
-    """This handles containment and other similar relationships.  When
-    updates on one object will trigger notification on another, then
-    the first object is said to be the child of the first."""
-    parent = ForeignKey("Page")
-    child = ForeignKey("Page")
-    everything_index = DatabaseIndex('parent', 'child', unique=True)
+# class Association(SQLObject):
+#     """This handles containment and other similar relationships.  When
+#     updates on one object will trigger notification on another, then
+#     the first object is said to be the child of the first."""
+#     parent = ForeignKey("Page")
+#     child = ForeignKey("Page")
+#     everything_index = DatabaseIndex('parent', 'child', unique=True)
     
 class EventClass(SQLObject):
     """This represents a type of event.  Some event types will only
@@ -181,7 +187,6 @@ class AutoWatchPreference(SQLObject):
 
 
 soClasses = [
-    Association,
     AutoWatchClass,
     AutoWatchPreference,
     EventClass,
