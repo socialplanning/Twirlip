@@ -53,11 +53,17 @@ of them.</p>
 % for preference in c.user.url_preferences:
 <tr>
   <td>
-    ${preference.event_class.display_name % "object"}
+    ${preference.page.title}
   </td>
   <td>
-    ${h.notification_dropdown("ec_" + preference.event_class.name, selected=preference.notification_method.name)}
-  </td>
+    <td>
+        <ul class="oc-actions oc-dataTable-row-actions">
+          <li>
+            <a class="oc-actionLink oc-js-actionLink"
+               href="${h.url_for(controller='watch', action='unwatch', id=preference.id)}">Unsubscribe</a>
+          </li>
+        </ul>
+      </td>
 </tr>
 % endfor
 </table>
