@@ -18,6 +18,11 @@ import paste.script.appinstall
 from paste.deploy import loadapp
 from routes import url_for
 
+from wsseauth import wsse_header
+from simplejson import dumps
+from twirlip.tests.server import TwirlipTestServer
+import time
+        
 __all__ = ['url_for', 'TestController']
 
 here_dir = os.path.dirname(os.path.abspath(__file__))
@@ -36,5 +41,23 @@ class TestController(TestCase):
 
     def __init__(self, *args, **kwargs):
         wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
-        self.app = paste.fixture.TestApp(wsgiapp)
+        self.app = wsgiapp
+        test_server = TwirlipTestServer()
+        time.sleep(0.01) 
         TestCase.__init__(self, *args, **kwargs)
+
+        
+    def get_app(self, username):
+        encoded = 'Basic ' + (username + ':nopassword').encode('base64')
+        return paste.fixture.TestApp(self.app, extra_environ={'HTTP_AUTHORIZATION': encoded})
+
+    def cabochon_message(self, path, params):
+        #we need a wsse header
+
+        params = dict((key, dumps(value)) for key, value in params.items())
+        extra_environ = {'HTTP_AUTHORIZATION' : 'WSSE profile="UsernameToken"',
+                         'HTTP_X_WSSE' : wsse_header('topp', 'secret')
+                         }
+        app = paste.fixture.TestApp(self.app, extra_environ=extra_environ)
+        response = app.post(path, params = params)
+        assert response.body == '{"status": "accepted"}'
