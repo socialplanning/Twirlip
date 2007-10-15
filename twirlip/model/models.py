@@ -56,7 +56,7 @@ class User(SQLObject):
         
         for event_class in EventClass.select():
             try:
-                EventPreference(user=self, event_class=event_class, notification_method=NotificationMethod.NONE)
+                EventPreference(user=self, event_class=event_class, notification_method=NotificationMethod.byName('None'))
             except DuplicateEntryError:
                 pass #we already have this preference
 
@@ -122,8 +122,6 @@ class EventClass(SQLObject):
 class NotificationMethod(SQLObject):
     """None, Email, account page, SMS, carrier pigeon..."""
     name = StringCol(length=20, alternateID=True)
-
-NotificationMethod.NONE = NotificationMethod.byName("None")
 
 class AutoWatchClass(SQLObject):
     name = StringCol(length=20, alternateID=True)
