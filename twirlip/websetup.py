@@ -15,7 +15,7 @@ def setup_config(command, filename, section, vars):
     from twirlip.model import soClasses
     from twirlip.model.config import create_defaults
 
-    if filename == "test.ini":
+    if filename.endswith("test.ini"):
         for table in soClasses[::-1]:
             table.dropTable(ifExists=True)
     for table in soClasses:
