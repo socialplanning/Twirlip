@@ -20,6 +20,7 @@
 from twirlip.lib.base import *
 from twirlip.model import *
 from cabochonserver import ServerInstaller
+from pylons import config
 
 class ConfigController(BaseController):
     def index(self):
