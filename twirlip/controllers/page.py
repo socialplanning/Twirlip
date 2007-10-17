@@ -47,9 +47,10 @@ class PageController(BaseController):
                 continue
             try:
                 pref = AutoWatchPreference.selectBy(auto_watch_class=awc, user=user)[0]
+                #if pref exists:
+                URLPreference.create(user, page=page)
             except IndexError:
                 pass
-            URLPreference.create(user, page=page)
         page.notify()
         
         return {'status' : 'accepted'}
