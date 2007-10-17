@@ -31,6 +31,6 @@ def get_email(username):
         return None #we've got to keep going
         #raise ValueError("Error retrieving user %s: status %s%s" 
         #                 % (username, resp['status'], extra))
-    
+
     tree = ET.fromstring(content)
     return tree.findall('email')[0].text

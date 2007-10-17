@@ -37,15 +37,24 @@ test_file = os.path.join(conf_dir, 'test.ini')
 cmd = paste.script.appinstall.SetupCommand('setup-app')
 cmd.run([test_file])
 
+test_server = TwirlipTestServer()
+test_server.start()
+time.sleep(0.01) 
+
+def mock_email(user, page):
+    message = "The page %s has been updated.  \nGo to %s to see it." % (page.title, page.url)
+    subject = 'Update notification' 
+    from pylons import request
+    request.environ['paste.testing_variables']['email'] = dict(address=user.email, message=message, subject=subject)
+
 class TestController(TestCase):
 
     def __init__(self, *args, **kwargs):
         wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
         self.app = wsgiapp
-        test_server = TwirlipTestServer()
-        time.sleep(0.01) 
+        from twirlip.lib.notification import notification_methods
+        notification_methods['Email'] = mock_email
         TestCase.__init__(self, *args, **kwargs)
-
         
     def get_app(self, username):
         encoded = 'Basic ' + (username + ':nopassword').encode('base64')
@@ -61,3 +70,4 @@ class TestController(TestCase):
         app = paste.fixture.TestApp(self.app, extra_environ=extra_environ)
         response = app.post(path, params = params)
         assert response.body == '{"status": "accepted"}'
+        return response

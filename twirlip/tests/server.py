@@ -42,8 +42,16 @@ class TwirlipServerFixture:
         if environ.get('HTTP_X_WSSE'):
             match = self.wsse_username_re.search(environ.get('HTTP_X_WSSE'))
             req_dict['username'] = match.group(1) #assume user logged in correctly
-        
         self.requests_received.append(req_dict)
+        
+        if path_info.startswith('/openplans'):
+            #handle userinfo requests here
+            path = path_info[len("/openplans/people/"):]
+            username, infoxml = path.split("/")
+            assert infoxml == "info.xml"
+            status = '200 OK'
+            start_response(status, [('Content-type', 'text/plain')])
+            return ['<info><name>%s</name><email>%s@example.com</email></info>' % (username, username)]
         if path_info == '/forbidden':
             status = '403 access denied'
             start_response(status, [('Content-type', 'text/plain')])

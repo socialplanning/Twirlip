@@ -43,12 +43,13 @@ class TestUserController(TestController):
         app = self.get_app('admin')
         
         #assign a task to the user
-        self.cabochon_message('/page/edit', params=dict
-                              (url = 'http://morx.example.com/fleem',
-                               title = 'page morx fleem title',
-                               context = 'http://localhost:10424/accepted',
-                               event_class = [('task_assigned', 'someuser')],
-                               ))
+        res = self.cabochon_message(
+            '/page/edit', params=dict
+            (url = 'http://morx.example.com/fleem',
+             title = 'page morx fleem title',
+             context = 'http://localhost:10424/accepted',
+             event_class = [('task_assigned', 'someuser')],
+             ))
         
         #check that the user is now subscribed.
         someuser = User.byUsername('someuser')
@@ -57,3 +58,7 @@ class TestUserController(TestController):
         prefs = URLPreference.selectBy(user=someuser, page=page)
         assert prefs.count() == 1
 
+
+        #check that the user is notified
+        assert res.email['address'] == 'someuser@example.com'
+        

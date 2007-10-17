@@ -19,6 +19,8 @@ class EmailMessage:
 
         self.body = varsub_re.sub(lambda var: kw[var], raw_message)
         
+    def send(self, sender, to):
+        send_mail(sender, to, self.subject, self.body)
 
 def send_mail(sender, to, subject, body):
     glob_email = config.get('global_email_override')
