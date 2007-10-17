@@ -4,7 +4,6 @@ from twirlip.model import *
 class TestUserController(TestController):
 
     def test_config(self):
-        print "Cabochon must be running!"
         app = self.get_app('admin')
         response = app.get(url_for(controller='config', action='index'))
         response.mustcontain('configured')
@@ -22,7 +21,7 @@ class TestUserController(TestController):
 
         admin = User.byUsername('admin')
         awc = AutoWatchClass.byName('task_assigned')
-        assert AutoWatchPreference.selectBy(user='admin', auto_watch_class = awc).count() == 0
+        assert AutoWatchPreference.selectBy(user=admin, auto_watch_class = awc).count() == 0
         
         #now let's have a task assigned
         self.cabochon_message('/page/edit', params=dict
@@ -38,4 +37,23 @@ class TestUserController(TestController):
         assert page.title == 'page morx fleem title'
         prefs = URLPreference.selectBy(user=admin, page=page)
         assert prefs.count() == 0
+
+
+    def test_auto_watch(self):
+        app = self.get_app('admin')
+        
+        #assign a task to the user
+        self.cabochon_message('/page/edit', params=dict
+                              (url = 'http://morx.example.com/fleem',
+                               title = 'page morx fleem title',
+                               context = 'http://localhost:10424/accepted',
+                               event_class = [('task_assigned', 'someuser')],
+                               ))
+        
+        #check that the user is now subscribed.
+        someuser = User.byUsername('someuser')
+        page = Page.byUrl('http://morx.example.com/fleem')
+        assert page.title == 'page morx fleem title'
+        prefs = URLPreference.selectBy(user=someuser, page=page)
+        assert prefs.count() == 1
 
