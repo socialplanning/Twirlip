@@ -38,7 +38,7 @@ class PageController(BaseController):
             User.get_or_create(username)
         
         #set up autowatches
-        for cls in self.params['event_class']:
+        for cls in self.params.get('event_class', []):
             cls, value = cls
             user = User.get_or_create(value)
             try:
