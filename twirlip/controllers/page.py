@@ -5,8 +5,13 @@ from simplejson import loads
 
 class PageController(BaseController):
     @dispatch_on(POST='do_create')
+    def index(self):
+        pass
+
+    @dispatch_on(POST='do_create')
     def create(self):
         pass
+
 
     @jsonify
     def do_create(self):

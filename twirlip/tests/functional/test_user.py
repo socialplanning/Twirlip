@@ -9,15 +9,14 @@ class TestUserController(TestController):
         response.mustcontain('configured')
         
         response = app.get(url_for(controller='user', action='preferences'))
-        response.mustcontain('Subscribe me to events automatically when:')
         response.mustcontain('a task is assigned to me')
 
         #a task is assigned to me
         form = response.forms[0]
-        form['awc_task_assigned'] = 'No'
+        form['awc_task_assigned'].checked = False
         response = form.submit().follow()
         
-        response.mustcontain('<option value="No" selected')
+        assert 'checked' not in response.body
 
         admin = User.byUsername('admin')
         awc = AutoWatchClass.byName('task_assigned')
@@ -40,7 +39,7 @@ class TestUserController(TestController):
 
 
     def test_auto_watch(self):
-        app = self.get_app('admin')
+        app = self.get_app('someuser')
         
         #assign a task to the user
         res = self.cabochon_message(
@@ -58,34 +57,23 @@ class TestUserController(TestController):
         prefs = URLPreference.selectBy(user=someuser, page=page)
         assert prefs.count() == 1
 
-
         #check that the user is notified
         assert res.email['address'] == 'someuser@example.com'
         assert res.email['event_class'] == 'update'
-        
-    def test_auto_watch(self):
-        app = self.get_app('admin')
-        
-        #assign a task to the user
-        res = self.cabochon_message(
-            '/page/edit', params=dict
-            (url = 'http://morx.example.com/fleem',
-             title = 'page morx fleem title',
-             context = 'http://localhost:10424/accepted',
-             event_class = [('task_assigned', 'someuser')],
-             ))
-        
-        #check that the user is now subscribed.
-        someuser = User.byUsername('someuser')
-        page = Page.byUrl('http://morx.example.com/fleem')
-        assert page.title == 'page morx fleem title'
-        prefs = URLPreference.selectBy(user=someuser, page=page)
-        assert prefs.count() == 1
 
+        #and that the sub appears on the watchlist
+        res = app.get(url_for(controller='user', action='watchlist'), extra_environ=dict(HTTP_X_TRANSCLUDED='http://somewhere'))
+        res.mustcontain('page morx fleem title')
 
-        #check that the user is notified
-        assert res.email['address'] == 'someuser@example.com'
-        assert res.email['event_class'] == 'update'
+        #and that we can unsub
+        #using checkboxes
+        
+        form = res.forms[0]
+        form['check:list'].checked = True
+        res = form.submit()
+        assert res.header_dict['location'] == 'http://somewhere'
+        res = app.get(url_for(controller='user', action='watchlist'))
+        assert not 'page morx fleem title' in res
         
     #check security context
     def test_security(self):

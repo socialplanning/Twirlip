@@ -1,65 +1,30 @@
 <%inherit file="base.mako"/>
-<form method="POST">
+<form class="oc-js-expander oc-expander" method="post">
+   <input name="done_url" value="${c.done_url}" type="hidden"/>
+   <fieldset>
+     <legend class="oc-legend-label">
+       <a href="#" class="oc-js-expander_open oc-expanderLink">Notification preferences</a>
+    </legend>
 
-<p>Please set your notification preferences.  Openplans has many kinds
-of events, and you can choose to be notified or not notified for each
-of them.</p>
+<ul class="oc-js-expander-content oc-expander-content oc-plainList">
 
-<p>Subscribe me to events automatically when:</p>
-
-<table style="width:50%; border:1px dashed black;">
-<tr>
-<th style="text-align:left;">Situation</th>
-<th style="text-align:left;">Subscribe me</th>
-</tr>
 % for awc, auto in c.user.all_auto_watch_preferences():
-<tr>
-  <td>
-    ${awc.display_name}
-  </td>
-  <td>
-   <div class="oc-js-liveEdit">
-    <div class="oc-js-liveEdit-value oc-js-liveEdit_showForm oc-liveEdit-value oc-directEdit">Yes</div><!-- end .oc-js-liveEdit -->
-
-            <div class="oc-js-liveEdit-editForm oc-liveEdit-editForm oc-js-actionSelect">
-    ${h.yes_no_dropdown("awc_" + awc.name, auto)}
-                <input type="submit" class="" value="Go"
-                       name="task|awc-${awc.name}|change-listing" />
-            </div><!-- end .oc-js-liveEdit-editForm -->
-
-     </div><!-- end .oc-js-liveEdit-editForm .oc-js-actionSelect -->
-    </div><!-- end .oc-js-liveEdit .oc-js-actionSelect -->
-  </td>
-</tr>
-% endfor
-</table>
-
-
-% if len(c.user.url_preferences):
-<p>Objects I'm now subscribed to:</p>
-<table style="width:50%; border:1px dashed black;">
-<tr>
-<th style="text-align:left;">Name</th>
-<th style="text-align:left;">Notify</th>
-</tr>
-% for preference in c.user.url_preferences:
-<tr id="up_${preference.id}">
-  <td>
-    ${preference.page.title}
-  </td>
-  <td>
-      <ul class="oc-actions oc-dataTable-row-actions">
-        <li>
-          <a class="oc-actionLink oc-js-actionLink"
-             href="${h.url_for(controller='watch', action='unwatch', id=preference.id, ajax=1)}">Stop watching</a>
-        </li>
-      </ul>
-  </td>
-</tr>
-% endfor
-</table>
+<li>
+  <input name="awc_${awc.name}" id="awc_${awc.name}" type="checkbox" 
+% if auto:
+checked="checked"
 % endif
+>
 
-<br/>
+  <label for="awc_${awc.name}">
+Subscribe me to events automatically when ${awc.display_name}
+  </label>
+</li>
+% endfor
 
+<li><input type="submit" value="Change" name="task|preferences" class="oc-button oc-chooseThis"> or <a href="#" class="oc-js-expander_close">Cancel</a> 
+</li>
+</ul>
+
+    </fieldset>
 </form>

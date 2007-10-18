@@ -25,7 +25,7 @@ from pylons import config
 class ConfigController(BaseController):
     def index(self):
         installer = ServerInstaller(".servers", config['cabochon_username'], config['cabochon_password'])
-        installer.addEvent(config['event_server'], 'create_page', h.url_for(controller='page', action='', qualified=True))
+        installer.addEvent(config['event_server'], 'create_page', h.url_for(controller='page', action='create', qualified=True))
         installer.addEvent(config['event_server'], 'edit_page', h.url_for(controller='page', action='edit', qualified=True))
         installer.addEvent(config['event_server'], 'delete_page', h.url_for(controller='page', action='delete', qualified=True))        
 
