@@ -1,16 +1,20 @@
 from twirlip.lib.sendmail import send_mail
+from twirlip.lib.messages import messages
 
-def email(user, page):
+def email(user, page, event_type):
     if not user.email:
         return
 
-    message = "The page %s has been updated.  \nGo to %s to see it." % (page.title, page.url)
-    subject = 'Update notification' 
+    message = messages['event_type']
+    page_dict = page.sqlmeta.asDict()
+    subject = message['subject'] % page_dict
+    body = message['body'] % page_dict
+
     send_mail ('notification@openplans.org', user.email, subject, message)
 
 
 notification_methods = {'Email' : email}
 
-def notify(method, user, page, event_type=None):
-    notification_methods[method](user, page)
+def notify(method, user, page, event_type):
+    notification_methods[method](user, page, event_type)
 

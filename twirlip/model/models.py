@@ -4,7 +4,9 @@ from sqlobject import *
 from pylons.database import PackageHub
 from sqlobject.dberrors import DuplicateEntryError
 from twirlip.lib.notification import notify
-
+from tasktracker.lib.cookieauth import make_cookie
+from httplib2 import Http
+ 
 hub = PackageHub("twirlip", pool_connections=False)
 __connection__ = hub
 
@@ -70,6 +72,8 @@ class SecurityContext(SQLObject):
     """This represents a set of objects which share security permissions.  For
     example, all tasks on a task list share the same security."""
     url = StringCol(length=512)
+    
+    url_index = DatabaseIndex('url', unique=True)
 
     @classmethod
     def byUrl(cls, url):
@@ -78,7 +82,17 @@ class SecurityContext(SQLObject):
         except IndexError:
             return cls(url=url)
 
-    url_index = DatabaseIndex('url', unique=True)
+    def can_read(self, user):
+        #make a http request to url as user.
+        cookie = make_cookie(user.username)
+        headers = dict(Cookie = "%s=%s" % cookie)
+        http = Http() #fixme: globalize this so I can use keepalive
+        http.follow_redirects = True
+        response, content = http.request(self.url, headers=headers)
+        return response.status == 200
+        
+
+
     
 class Page(SQLObject):
     """This represents a URL that can be watched."""
@@ -86,10 +100,10 @@ class Page(SQLObject):
     title = StringCol() #usually something like ${Project}: ${page_or_task_name}
     securityContext = ForeignKey("SecurityContext")
 
-    def notify(self):
+    def notify(self, event_type):
         for pref in URLPreference.selectBy(page=self):
             user = pref.user
-            notify(pref.notification_method.name, user, self)
+            notify(pref.notification_method.name, user, self, event_type)
 
     def destroySelf(self):
         for pref in URLPreference.selectBy(page=self):
@@ -172,6 +186,8 @@ class URLPreference(SQLObject):
                 print "Can't watch an object that we haven't heard of yet"
                 return
 
+        if not page.securityContext.can_read(user):
+            return None
         try:        
             return cls(user=user, page=page, notification_method = NotificationMethod.byName('Email')) #fixme: make method configurable
         except DuplicateEntryError:

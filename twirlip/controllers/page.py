@@ -5,7 +5,7 @@ from simplejson import loads
 
 class PageController(BaseController):
     @dispatch_on(POST='do_create')
-    def index(self):
+    def create(self):
         pass
 
     @jsonify
@@ -51,15 +51,17 @@ class PageController(BaseController):
                 URLPreference.create(user, page=page)
             except IndexError:
                 pass
-        page.notify()
+        page.notify('update')
         
         return {'status' : 'accepted'}
+        
 
     @jsonify
     def delete(self):
         #FIXME: notify on delete
         try:
             page = Page.selectBy(url=self.params['url'])[0]
+            page.notify('delete')            
             page.destroySelf()
         except IndexError:
             pass

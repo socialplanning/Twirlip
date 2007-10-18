@@ -41,11 +41,9 @@ test_server = TwirlipTestServer()
 test_server.start()
 time.sleep(0.01) 
 
-def mock_email(user, page):
-    message = "The page %s has been updated.  \nGo to %s to see it." % (page.title, page.url)
-    subject = 'Update notification' 
+def mock_email(user, page, event_class):
     from pylons import request
-    request.environ['paste.testing_variables']['email'] = dict(address=user.email, message=message, subject=subject)
+    request.environ['paste.testing_variables']['email'] = dict(address=user.email, event_class=event_class)
 
 class TestController(TestCase):
 

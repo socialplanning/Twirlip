@@ -52,11 +52,11 @@ class TwirlipServerFixture:
             status = '200 OK'
             start_response(status, [('Content-type', 'text/plain')])
             return ['<info><name>%s</name><email>%s@example.com</email></info>' % (username, username)]
-        if path_info == '/forbidden':
+        elif path_info == '/forbidden':
             status = '403 access denied'
             start_response(status, [('Content-type', 'text/plain')])
             return ['you lose']
-        if path_info == '/accepted':
+        elif path_info == '/accepted':
             status = '200 OK'
             start_response(status, [('Location', '/redirected')])
             return ['ftw!']
