@@ -37,12 +37,12 @@ class BaseController(WSGIController):
             if controller == 'watch' or controller == 'user':
                 c.user = User.get_or_create(username)
             else:
-                if environ.get('REMOTE_ADDR').startswith('127.0.0.1') and controller == 'config':
-                    #local users can configure Twirlip
+                if (environ.get('REMOTE_ADDR').startswith('127.0.0.1') and controller == 'config') or controller == 'error':
+                    #local users can configure Twirlip and see errors
                     pass
                 else:
                     #all other authentication must be by wsse
-                    return WSGIResponse(code=403, content='You need to authenticate with wsse')
+                    return WSGIResponse(code=403, content='You need to authenticate with wsse to access %s ' % controller)
             
         if controller == 'page':
             #json

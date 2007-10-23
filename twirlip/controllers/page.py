@@ -15,6 +15,7 @@ class PageController(BaseController):
 
     @jsonify
     def do_create(self):
+        """Called from cabochon when a page is created."""
         context = SecurityContext.byUrl(self.params['context'])
         try:
             Page(url=self.params['url'], 
@@ -28,6 +29,7 @@ class PageController(BaseController):
 
     @jsonify
     def edit(self):
+        """Called from cabochon when a page is edited."""        
         context = SecurityContext.byUrl(self.params['context'])
         try:
             page = Page.selectBy(url=self.params['url'])[0]
@@ -63,7 +65,7 @@ class PageController(BaseController):
 
     @jsonify
     def delete(self):
-        #FIXME: notify on delete
+        """Called from cabochon when a page is deleted."""                
         try:
             page = Page.selectBy(url=self.params['url'])[0]
             page.notify('delete')            
@@ -74,7 +76,7 @@ class PageController(BaseController):
 
     @jsonify
     def email_changed(self):
-        
+        """Called from cabochon when a user's email address changes."""
         User.get_or_create(self.params['user']).email=self.params['email']
 
         return {'status' : 'accepted'}        

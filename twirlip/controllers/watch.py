@@ -6,14 +6,18 @@ from twirlip.lib.helpers import oc_json_response
 class WatchController(BaseController):
 
     def control(self):
-        url = request.environ['HTTP_X_TRANSCLUDED']
+        try:       
+            url = request.environ['HTTP_X_TRANSCLUDED']
+        except KeyError:
+            url = request.params['url']
+
         try:
             page = Page.byUrl(url)
         except SQLObjectNotFound:
-            return "" #no control
+            return "<html><head></head><body></body></html>" #no control
 
         if not page.securityContext.can_read(c.user):
-            return ""
+            return "<html><head></head><body></body></html>"
         
         pref = URLPreference.lookup(c.user, url)
         c.is_watching = bool(pref)

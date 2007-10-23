@@ -1,5 +1,5 @@
 <%inherit file="base.mako"/>
-<form class="oc-js-expander oc-expander" method="post">
+<form class="oc-js-expander oc-expander" method="post" action="${h.url_for()}>
    <input name="done_url" value="${c.done_url}" type="hidden"/>
    <fieldset>
      <legend class="oc-legend-label">

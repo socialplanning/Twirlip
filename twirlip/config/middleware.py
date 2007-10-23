@@ -63,7 +63,7 @@ def make_app(global_conf, full_stack=True, **app_conf):
                  }
         
         app = TestingEnv(app, users)
-        
+        app = CookieAuth(app, app_conf)
     elif app_conf.get('openplans_wrapper') == 'CookieAuth':
         app = CookieAuth(app, app_conf)
 

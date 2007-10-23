@@ -28,6 +28,6 @@ def load_environment(global_conf, app_conf):
 
     # Customize templating options via this variable
     tmpl_options = config['buffet.template_options']
-
+    
     # CONFIGURATION OPTIONS HERE (note: all config options will override
     # any Pylons config options)
