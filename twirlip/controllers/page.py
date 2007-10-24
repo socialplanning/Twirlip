@@ -42,11 +42,14 @@ class PageController(BaseController):
 
         #create any necessary users
         for username in self.params.get('relevant_users', []):
-            User.get_or_create(username)
+            if username:
+                User.get_or_create(username)
         
         #set up autowatches
         for cls in self.params.get('event_class', []):
             cls, value = cls
+            if not value:
+                continue
             user = User.get_or_create(value)
             try:
                 awc = AutoWatchClass.byName(cls)

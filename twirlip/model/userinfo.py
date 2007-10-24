@@ -8,6 +8,7 @@ from logging import warn
 def get_email(username):
     admin_file = config['topp_admin_info_filename']
     admin_info = tuple(file(admin_file).read().strip().split(":"))
+
     server = config['openplans_instance']
                 
     h = httplib2.Http()

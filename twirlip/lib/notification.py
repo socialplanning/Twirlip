@@ -5,12 +5,12 @@ def email(user, page, event_type):
     if not user.email:
         return
 
-    message = messages['event_type']
+    message = messages[event_type]
     page_dict = page.sqlmeta.asDict()
     subject = message['subject'] % page_dict
     body = message['body'] % page_dict
 
-    send_mail ('notification@openplans.org', user.email, subject, message)
+    send_mail ('notification@openplans.org', user.email, subject, body)
 
 
 notification_methods = {'Email' : email}
