@@ -7,7 +7,7 @@
  <div id="watch_table"
       class="oc-widget oc-widget-dataTable oc-clearAfter">
    <h2 class="oc-toggleFold oc-dataTable-heading">
-     Pages you are watching (<span id="num_watches">${len(c.watches)})</span>
+     Pages you are watching (<span id="num_watches">${len(c.watches)}</span>)
    </h2>      
 
 <table class="oc-dataTable" cellpadding="0" cellspacing="0" id="">
