@@ -7,6 +7,7 @@ from webhelpers import *
 from twirlip.model import *
 from simplejson import dumps
 from paste.wsgiwrappers import WSGIResponse
+from webhelpers.rails import secure_form_tag, secure_form
 
 def notification_dropdown(name, selected=None):
     options = [n.name for n in NotificationMethod.select()]
@@ -38,3 +39,10 @@ def oc_json_response(obj, status=''):
     response.headers['X-Deliverance-No-Theme'] = '1'
     return response
 #    return "<html><body>%s</body></html>" % escape(dumps(obj))
+
+def secure_url_for(**kw):
+    kw[secure_form_tag.token_key] = secure_form_tag.authentication_token()
+    return url_for(**kw)
+
+def hidden_authenticator():
+   return '<input name="%s" value="%s" type="hidden"/>' % (secure_form_tag.token_key, secure_form_tag.authentication_token())

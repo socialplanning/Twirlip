@@ -1,6 +1,7 @@
 <%inherit file="base.mako"/>
-<form class="oc-js-expander oc-expander" method="post" action="${h.url_for()}">
+<form class="oc-js-expander oc-expander" method="post" action="${h.url_for(qualified=True)}">
    <input name="done_url" value="${c.done_url}" type="hidden"/>
+   ${h.hidden_authenticator()}
    <fieldset>
      <legend class="oc-legend-label">
        <a href="#" class="oc-js-expander_open oc-expanderLink">Notification preferences</a>

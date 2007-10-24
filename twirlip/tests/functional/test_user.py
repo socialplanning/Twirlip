@@ -1,5 +1,12 @@
 from twirlip.tests import *
 from twirlip.model import *
+from webhelpers.rails import secure_form_tag
+import re
+
+authenticator_re = re.compile("_authentication_token=(\w+)")
+def get_authenticator(res):
+    body = res.body
+    return authenticator_re.search(body).group(1)
 
 class TestUserController(TestController):
 
@@ -70,7 +77,7 @@ class TestUserController(TestController):
         
         form = res.forms[0]
         form['check:list'].checked = True
-        res = form.submit()
+        res = form.submit('task|watchlist')
         assert res.header_dict['location'] == 'http://somewhere'
         res = app.get(url_for(controller='user', action='watchlist'))
         assert not 'page morx fleem title' in res
@@ -78,6 +85,19 @@ class TestUserController(TestController):
     #check security context
     def test_security(self):
         app = self.get_app('morx')
+
+        #get an authenticator
+        #create a page with a security context which does allow morx to view
+        self.cabochon_message(
+            '/page/create', params=dict
+            (url = 'http://morx.example.com/yesgo',
+             title = 'page morx fleem title',
+             context = 'http://localhost:10424/accepted',
+             ))
+        
+        res = app.get(url_for(controller='watch', action='control'), extra_environ=dict(HTTP_X_TRANSCLUDED='http://morx.example.com/yesgo'))
+        token = get_authenticator(res)
+        
         #create a page with a security context which does not allow morx to view
         self.cabochon_message(
             '/page/create', params=dict
@@ -89,9 +109,9 @@ class TestUserController(TestController):
         #check that the control is empty
         res = app.get(url_for(controller='watch', action='control'), extra_environ=dict(HTTP_X_TRANSCLUDED='http://morx.example.com/nogo'))
         assert res.body == '<html><head></head><body></body></html>'
-        
+
         #try to watch
-        res = app.get(url_for(controller='watch', action='watch', url='http://morx.example.com/nogo'))
+        res = app.post(url_for(controller='watch', action='watch', url='http://morx.example.com/nogo'), params={secure_form_tag.token_key : token})
 
         #but it fails
         user = User.byUsername('morx')

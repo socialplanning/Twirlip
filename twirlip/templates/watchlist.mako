@@ -1,7 +1,8 @@
 <%inherit file="base.mako"/>
 % if c.watches:
 
-<form method="POST">
+${h.secure_form(h.url_for(action="unwatch", controller="watch", qualified=True))}
+
 <input name="done_url" value="${c.done_url}" type="hidden"  action="${h.url_for()}" />
 
  <div id="watch_table"
@@ -33,8 +34,8 @@
   <td>
       <ul class="oc-actions oc-dataTable-row-actions">
         <li>
-          <a class="oc-actionLink oc-js-actionLink"
-             href="${h.url_for(controller='watch', action='unwatch', id=preference.id, ajax=1, qualified=True)}">Stop watching</a>
+          <a class="oc-actionLink oc-js-actionLink oc-js-actionPost"
+             href="${h.secure_url_for(controller='watch', action='unwatch', id=preference.id, ajax=1, qualified=True)}">Stop watching</a>
         </li>
       </ul>
   </td>
@@ -43,6 +44,6 @@
 </tbody>
 </table>
 </div> <!-- watch table -->
-<input type="submit" value="Unwatch" name="task|watchlist" class="oc-button oc-chooseThis oc-js-actionButton" />
+<input type="submit" value="Unwatch" name="task|watchlist" class="oc-button oc-chooseThis" />
 </form>
 % endif
