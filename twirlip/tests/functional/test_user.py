@@ -88,7 +88,7 @@ class TestUserController(TestController):
 
         #check that the control is empty
         res = app.get(url_for(controller='watch', action='control'), extra_environ=dict(HTTP_X_TRANSCLUDED='http://morx.example.com/nogo'))
-        assert res.body == ''
+        assert res.body == '<html><head></head><body></body></html>'
         
         #try to watch
         res = app.get(url_for(controller='watch', action='watch', url='http://morx.example.com/nogo'))
