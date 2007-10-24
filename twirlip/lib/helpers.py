@@ -6,6 +6,7 @@ available to Controllers. This module is available to both as 'h'.
 from webhelpers import *
 from twirlip.model import *
 from simplejson import dumps
+from paste.wsgiwrappers import WSGIResponse
 
 def notification_dropdown(name, selected=None):
     options = [n.name for n in NotificationMethod.select()]
@@ -23,11 +24,17 @@ def escape(value):
     return value
 
 def oc_json_response(obj, status=''):
+    
+    #x-deliverance-no-theme
     if not 'oc-statusMessage-container' in obj:
         if status:
             obj['oc-statusMessage-container'] = {'action': 'replace', 'html': '\n <div id="oc-statusMessage-container"><div class="oc-statusMessage oc-js-closeable">%s</div></div>\n\n' % status, 'effects': 'blink'}
             
         else:
             obj['oc-statusMessage-container'] = {'action': 'replace', 'html': '\n <div id="oc-statusMessage-container"> </div>\n\n', 'effects': 'blink'}
-        
-    return "<html><body>%s</body></html>" % escape(dumps(obj))
+
+    response = WSGIResponse()
+    response.write("<html><body>%s</body></html>" % escape(dumps(obj)))
+    response.headers['X-Deliverance-No-Theme'] = '1'
+    return response
+#    return "<html><body>%s</body></html>" % escape(dumps(obj))
