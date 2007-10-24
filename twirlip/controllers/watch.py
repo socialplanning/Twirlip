@@ -50,7 +50,13 @@ class WatchController(BaseController):
         url = preference.page.url
         preference.destroySelf()
         if id:
-            return oc_json_response({"up_%s" % id: {'action': 'delete'}})
+            num_watches = URLPreference.selectBy(user=c.user).count()
+            return oc_json_response(
+                {"up_%s" % id: {'action': 'delete'},
+                 'num_watches' :
+                 dict(action = "replace",
+                      html = '<span id="num_watches">%d</span>' % num_watches)
+                })
         else:
             return redirect_to(url)
         
