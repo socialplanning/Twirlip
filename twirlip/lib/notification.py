@@ -7,6 +7,7 @@ def email(user, page, event_type):
 
     message = messages[event_type]
     page_dict = page.sqlmeta.asDict()
+    page_dict['unsubscribe'] = messages['unsubscribe']['body'] % dict(user = user.username)
     subject = message['subject'] % page_dict
     body = message['body'] % page_dict
 

@@ -20,7 +20,6 @@ from routes import url_for
 
 from wsseauth import wsse_header
 from simplejson import dumps
-from twirlip.tests.server import TwirlipTestServer
 import time
         
 __all__ = ['url_for', 'TestController']
@@ -36,10 +35,6 @@ pkg_resources.require('PasteScript')
 test_file = os.path.join(conf_dir, 'test.ini')
 cmd = paste.script.appinstall.SetupCommand('setup-app')
 cmd.run([test_file])
-
-test_server = TwirlipTestServer()
-test_server.start()
-time.sleep(0.01) 
 
 def mock_email(user, page, event_class):
     from pylons import request

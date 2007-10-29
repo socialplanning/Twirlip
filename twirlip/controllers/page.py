@@ -24,7 +24,11 @@ class PageController(BaseController):
         except DuplicateEntryError:
             page = Page.selectBy(url=self.params['url'])[0]
             page.set(title = self.params['title'], securityContext = context)
-            
+
+        self._set_up_autowatches(page)
+
+        page.notify('create')
+        
         return {'status' : 'accepted'}
 
     @jsonify
@@ -45,7 +49,12 @@ class PageController(BaseController):
             if username:
                 User.get_or_create(username)
         
-        #set up autowatches
+        self._set_up_autowatches(page)
+        page.notify('update')
+        
+        return {'status' : 'accepted'}
+
+    def _set_up_autowatches(self, page):
         for cls in self.params.get('event_class', []):
             cls, value = cls
             if not value:
@@ -61,10 +70,6 @@ class PageController(BaseController):
                 URLPreference.create(user, page=page)
             except IndexError:
                 pass
-        page.notify('update')
-        
-        return {'status' : 'accepted'}
-        
 
     @jsonify
     def delete(self):

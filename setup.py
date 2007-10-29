@@ -15,7 +15,8 @@ setup(
     install_requires=["Pylons>=0.9.6.1",
                       "TaskTracker",
                       "CabochonServer",
-                      "simplejson"
+                      "simplejson",
+                      "wsgi_intercept==httplib2,>=0.3dev",
                       ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
@@ -25,6 +26,9 @@ setup(
     #        ('**.py', 'python', None),
     #        ('templates/**.mako', 'mako', None),
     #        ('public/**', 'ignore', None)]},
+    dependency_links = [
+      "http://wsgi-intercept.googlecode.com/svn/branches/httplib2/#egg=wsgi_intercept-httplib2",
+      ],    
     entry_points="""
     [paste.app_factory]
     main = twirlip.config.middleware:make_app
