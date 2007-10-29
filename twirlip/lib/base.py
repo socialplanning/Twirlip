@@ -29,7 +29,7 @@ class BaseController(WSGIController):
 
         if controller == 'template':
             return WSGIController.__call__(self, environ, start_response)
-        username = environ['REMOTE_USER']
+        username = environ.get('REMOTE_USER')
         if not username:
             return WSGIResponse(content='please log in', code=401)
 

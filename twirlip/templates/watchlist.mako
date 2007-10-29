@@ -34,7 +34,7 @@ ${h.secure_form(h.url_for(action="unwatch", controller="watch", qualified=True))
   <td>
       <ul class="oc-actions oc-dataTable-row-actions">
         <li>
-          <a class="oc-actionLink oc-js-actionLink oc-js-actionPost"
+          <a class="oc-actionLink oc-js-actionPost"
              href="${h.secure_url_for(controller='watch', action='unwatch', id=preference.id, ajax=1, qualified=True)}">Stop watching</a>
         </li>
       </ul>
