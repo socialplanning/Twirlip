@@ -1,10 +1,8 @@
 from twirlip.lib.base import *
 from pylons.decorators.rest import dispatch_on
 from pylons.decorators.secure import authenticate_form
-from pylons.decorators.secure import authenticated_form
 
 from twirlip.lib.helpers import oc_json_response
-from webhelpers.rails import secure_form_tag
 
 class WatchController(BaseController):
 
