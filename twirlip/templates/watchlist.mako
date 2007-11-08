@@ -15,7 +15,7 @@ ${h.secure_form(h.url_for(action="unwatch", controller="watch", qualified=True))
 <thead>
   <tr>
     <th class="" style="width: 10px;" scope="col"><input class="oc-checkAll" type="checkbox"></th>
-    <th class="oc-columnSortable" style="width: 200px;" scope="col">Name</th>
+    <th class="oc-columnSortable" style="width: 300px;" scope="col">Name</th>
     <th class="oc-columnAction" scope="col">Actions</th>
 
   </trl>
