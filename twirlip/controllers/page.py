@@ -18,9 +18,9 @@ class PageController(BaseController):
         """Called from cabochon when a page is created."""
         context = SecurityContext.byUrl(self.params['context'])
         try:
-            Page(url=self.params['url'], 
-                 title=self.params['title'],
-                 securityContext=context)
+            page = Page(url=self.params['url'], 
+                        title=self.params['title'],
+                        securityContext=context)
         except DuplicateEntryError:
             page = Page.selectBy(url=self.params['url'])[0]
             page.set(title = self.params['title'], securityContext = context)
