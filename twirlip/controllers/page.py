@@ -48,7 +48,7 @@ class PageController(BaseController):
         for username in self.params.get('relevant_users', []):
             if username:
                 User.get_or_create(username)
-        
+
         self._set_up_autowatches(page)
         page.notify('update')
         

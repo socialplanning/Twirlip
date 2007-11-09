@@ -53,7 +53,7 @@ class TestUserController(TestController):
             '/page/edit', params=dict
             (url = 'http://morx.example.com/fleem',
              title = 'page morx fleem title',
-             context = 'http://localhost:10424/accepted',
+             context = 'http://testserver.example.com/accepted',
              event_class = [('task_assigned', 'someuser')],
              ))
         
@@ -65,7 +65,7 @@ class TestUserController(TestController):
         assert prefs.count() == 1
 
         #check that the user is notified
-        assert res.email['address'] == 'someuser@example.com'
+        assert res.email['user'].username == 'someuser'
         assert res.email['event_class'] == 'update'
 
         #and that the sub appears on the watchlist
@@ -92,7 +92,7 @@ class TestUserController(TestController):
             '/page/create', params=dict
             (url = 'http://morx.example.com/yesgo',
              title = 'page morx fleem title',
-             context = 'http://localhost:10424/accepted',
+             context = 'http://testserver.example.com/accepted',
              ))
         
         res = app.get(url_for(controller='watch', action='control'), extra_environ=dict(HTTP_X_TRANSCLUDED='http://morx.example.com/yesgo'))
@@ -103,7 +103,7 @@ class TestUserController(TestController):
             '/page/create', params=dict
             (url = 'http://morx.example.com/nogo',
              title = 'page morx fleem title',
-             context = 'http://localhost:10424/forbidden',
+             context = 'http://testserver.example.com/forbidden',
              ))
 
         #check that the control is empty

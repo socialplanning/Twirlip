@@ -21,7 +21,9 @@ from routes import url_for
 from wsseauth import wsse_header
 from simplejson import dumps
 import time
-        
+from wsgi_intercept import add_wsgi_intercept, httplib2_intercept
+from server import TwirlipServerFixture
+
 __all__ = ['url_for', 'TestController']
 
 here_dir = os.path.dirname(os.path.abspath(__file__))
@@ -38,7 +40,7 @@ cmd.run([test_file])
 
 def mock_email(user, page, event_class):
     from pylons import request
-    request.environ['paste.testing_variables']['email'] = dict(address=user.email, event_class=event_class)
+    request.environ['paste.testing_variables']['email'] = dict(user=user, event_class=event_class)
 
 class TestController(TestCase):
 
@@ -47,6 +49,9 @@ class TestController(TestCase):
         self.app = wsgiapp
         from twirlip.lib.notification import notification_methods
         notification_methods['Email'] = mock_email
+
+        httplib2_intercept.install()
+        add_wsgi_intercept('testserver.example.com', 80, TwirlipServerFixture)
         TestCase.__init__(self, *args, **kwargs)
         
     def get_app(self, username):
