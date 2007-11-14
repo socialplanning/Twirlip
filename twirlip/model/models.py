@@ -20,9 +20,9 @@ class User(SQLObject):
     auto_watch_preferences = MultipleJoin("AutoWatchPreference")    
 
     def _get_email(self):
-        email = self._SO_get_email()
-        if email:
-            return email
+        #email = self._SO_get_email()
+        #if email:
+        #    return email
 
         email = get_email(self.username)
         self.email = email
