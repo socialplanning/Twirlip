@@ -20,6 +20,8 @@ class User(SQLObject):
     auto_watch_preferences = MultipleJoin("AutoWatchPreference")    
 
     def _get_email(self):
+        #XXX uncomment these lines when opencore is sending email
+        #updates via Cabochon.
         #email = self._SO_get_email()
         #if email:
         #    return email
