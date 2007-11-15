@@ -4,7 +4,7 @@ from sqlobject import *
 from pylons.database import PackageHub
 from sqlobject.dberrors import DuplicateEntryError
 from twirlip.lib.notification import notify
-from tasktracker.lib.cookieauth import make_cookie
+from cookieauth.cookieauth import make_cookie
 from httplib2 import Http
  
 hub = PackageHub("twirlip", pool_connections=False)

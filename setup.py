@@ -28,6 +28,7 @@ setup(
     #        ('public/**', 'ignore', None)]},
     dependency_links = [
       "http://wsgi-intercept.googlecode.com/svn/branches/httplib2/#egg=wsgi_intercept-httplib2",
+      "https://svn.openplans.org/svn/cookieauth/trunk",
       ],    
     entry_points="""
     [paste.app_factory]
