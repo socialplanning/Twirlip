@@ -30,7 +30,7 @@ class BaseController(WSGIController):
         if controller == 'template':
             return WSGIController.__call__(self, environ, start_response)
         username = environ.get('REMOTE_USER')
-        if not username:
+        if not username and controller != 'config':
             return WSGIResponse(content='please log in', code=401)
 
         if environ.get('AUTHENTICATION_METHOD') != 'WSSE':
