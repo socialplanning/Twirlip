@@ -12,8 +12,7 @@ from pylons.wsgiapp import PylonsApp
 
 from twirlip.config.environment import load_environment
 
-from tasktracker.lib.testing_env import TestingEnv
-from tasktracker.lib.cookieauth import CookieAuth
+from cookieauth.cookieauth import CookieAuth
 from wsseauth import WSSEAuthMiddleware
 
 def make_app(global_conf, full_stack=True, **app_conf):
@@ -54,18 +53,7 @@ def make_app(global_conf, full_stack=True, **app_conf):
     # Establish the Registry for this application
     app = RegistryManager(app)
 
-    if app_conf.get('openplans_wrapper') == 'TestingEnv':
-        users = {'anon' : 'Anonymous',
-                 'auth' : 'Authenticated',
-                 'member' : 'ProjectMember',
-                 'contentmanager' : 'ProjectContentManager',
-                 'admin' : 'ProjectAdmin'
-                 }
-        
-        app = TestingEnv(app, users)
-        app = CookieAuth(app, app_conf)
-    elif app_conf.get('openplans_wrapper') == 'CookieAuth':
-        app = CookieAuth(app, app_conf)
+    app = CookieAuth(app, app_conf)
 
     username = config.get('cabochon_username', None)
     password = config.get('cabochon_password', None)

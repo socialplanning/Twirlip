@@ -13,7 +13,7 @@ setup(
     #author_email='',
     #url='',
     install_requires=["Pylons>=0.9.6.1",
-                      "TaskTracker",
+                      "cookieauth",
                       "CabochonServer",
                       "simplejson",
                       "wsgi_intercept==httplib2,>=0.3dev",
