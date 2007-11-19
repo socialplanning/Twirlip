@@ -2,8 +2,10 @@ from twirlip.lib.base import *
 from pylons.decorators.rest import dispatch_on
 from pylons.decorators import jsonify
 from simplejson import loads
-
+import re
 class PageController(BaseController):
+    canonicalize_url_re = re.compile('(http://[^/]+):80')
+    
     @dispatch_on(POST='do_create')
     def index(self):
         pass
@@ -17,12 +19,15 @@ class PageController(BaseController):
     def do_create(self):
         """Called from cabochon when a page is created."""
         context = SecurityContext.byUrl(self.params['context'])
+        url = self.params['url']
+        url = self.canonicalize_url_re.sub('\\1', url)
+
         try:
-            page = Page(url=self.params['url'], 
+            page = Page(url=url, 
                         title=self.params['title'],
                         securityContext=context)
         except DuplicateEntryError:
-            page = Page.selectBy(url=self.params['url'])[0]
+            page = Page.selectBy(url=url)[0]
             page.set(title = self.params['title'], securityContext = context)
 
         self._set_up_autowatches(page)

@@ -90,7 +90,7 @@ class TestUserController(TestController):
         #create a page with a security context which does allow morx to view
         self.cabochon_message(
             '/page/create', params=dict
-            (url = 'http://morx.example.com/yesgo',
+            (url = 'http://morx.example.com:80/yesgo',
              title = 'page morx fleem title',
              context = 'http://testserver.example.com/accepted',
              ))
