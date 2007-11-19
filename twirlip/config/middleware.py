@@ -53,7 +53,18 @@ def make_app(global_conf, full_stack=True, **app_conf):
     # Establish the Registry for this application
     app = RegistryManager(app)
 
-    app = CookieAuth(app, app_conf)
+    if app_conf.get('openplans_wrapper') == 'TestingEnv':
+        users = {'anon' : 'Anonymous',
+                 'auth' : 'Authenticated',
+                 'member' : 'ProjectMember',
+                 'contentmanager' : 'ProjectContentManager',
+                 'admin' : 'ProjectAdmin'
+                 }
+        from tasktracker.lib.testing_env import TestingEnv        
+        app = TestingEnv(app, users)
+        app = CookieAuth(app, app_conf)
+    elif app_conf.get('openplans_wrapper') == 'CookieAuth':
+        app = CookieAuth(app, app_conf)
 
     username = config.get('cabochon_username', None)
     password = config.get('cabochon_password', None)
