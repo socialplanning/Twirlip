@@ -2,6 +2,7 @@ from email.Message import Message
 import smtplib
 from pylons import config
 import re
+from warnings import warn
 
 class EmailMessage:
     subjectline_re = re.compile("^Subject: [^\n]+$(.*)", re.S|re.M)
@@ -32,7 +33,10 @@ def send_mail(sender, to, subject, body):
     message["Subject"] = subject
     message.set_payload(body)
     server = open_server()
-    server.sendmail(sender, to, message.as_string())
+    try:
+        server.sendmail(sender, to, message.as_string())
+    except smtplib.SMTPRecipientsRefused:
+        warn("unable to send mail to %s" % to) 
     server.quit()
 
 def open_server():
