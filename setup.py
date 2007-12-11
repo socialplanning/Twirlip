@@ -16,7 +16,7 @@ setup(
                       "cookieauth",
                       "CabochonServer",
                       "simplejson",
-                      "wsgi_intercept==httplib2,>=0.3dev",
+                      "wsgi_intercept",
                       ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
@@ -27,8 +27,7 @@ setup(
     #        ('templates/**.mako', 'mako', None),
     #        ('public/**', 'ignore', None)]},
     dependency_links = [
-      "http://wsgi-intercept.googlecode.com/svn/branches/httplib2/#egg=wsgi_intercept-httplib2",
-      "https://svn.openplans.org/svn/cookieauth/trunk",
+      "https://svn.openplans.org/svn/cookieauth/trunk#egg=cookieauth-dev",
       ],    
     entry_points="""
     [paste.app_factory]
