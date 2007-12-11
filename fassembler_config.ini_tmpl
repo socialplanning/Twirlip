@@ -1,0 +1,101 @@
+#
+# Twirlip - Pylons development environment configuration
+#
+# The %(here)s variable will be replaced with the parent directory of this file
+#
+[DEFAULT]
+debug = true
+# Uncomment and replace with the address which should receive any error reports
+#email_to = you@yourdomain.com
+#smtp_server = localhost
+error_email_from = paste@{{env.fq_hostname}}
+
+[server:main]
+use = egg:Paste#http
+host = {{config.host}}
+port = {{config.port}}
+
+[filter-app:main]
+## FIXME: this shouldn't be necessary
+use = egg:PasteDeploy#prefix
+next = main_app
+prefix = /notification
+
+[app:main_app]
+use = egg:Twirlip
+full_stack = true
+cache_dir = {{env.base_path}}/twirlip/var/data
+beaker.session.key = twirlip
+## FIXME: should be auto-generated
+beaker.session.secret = somesecret
+
+sqlobject.dburi = {{config.db_sqlobject}}
+
+## FIXME: should read from build.ini:
+event_server = http://localhost:24532
+
+## FIXME: should read from a file:
+cabochon_username = topp
+cabochon_password = secret
+
+## FIXME: should read from build.ini:
+topp_secret_filename = {{env.config.get('general', 'topp_secret_filename')}}
+
+## FIXME: should read from build.ini:
+topp_admin_info_filename = {{env.config.get('general', 'admin_info_filename')}}
+## FIXME: should read from build.ini:
+openplans_instance = http://localhost:8080/openplans
+
+## FIXME: should read from build.ini:
+smtp_server = mail.openplans.org
+
+## FIXME: should read from build.ini:
+openplans_instance = http://localhost:8080/openplans
+## FIXME: should read from build.ini:
+login_uri = http://novalis:4570/login
+
+## FIXME: should read from build.ini:
+## FIXME: also, should be URI template
+profile_uri = http://novalis:4570/people/%s/profile
+
+# If you'd like to fine-tune the individual locations of the cache data dirs
+# for the Cache data, or the Session saves, un-comment the desired settings
+# here:
+#beaker.cache.data_dir = %(here)s/data/cache
+#beaker.session.data_dir = %(here)s/data/sessions
+
+# WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
+# Debug mode will enable the interactive debugging tool, allowing ANYONE to
+# execute malicious code after an exception is raised.
+#set debug = false
+
+openplans_wrapper = CookieAuth
+
+# Logging configuration
+[loggers]
+keys = root, twirlip
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = INFO
+handlers = console
+
+[logger_twirlip]
+level = DEBUG
+handlers =
+qualname = twirlip
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s,%(msecs)03d %(levelname)-5.5s [%(name)s] %(message)s
+datefmt = %H:%M:%S

@@ -17,6 +17,8 @@ setup(
                       "CabochonServer",
                       "simplejson",
                       "wsgi_intercept",
+                      "httplib2",
+                      "SQLObject",
                       ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,

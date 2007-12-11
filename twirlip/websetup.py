@@ -9,7 +9,7 @@ from twirlip.config.environment import load_environment
 log = logging.getLogger(__name__)
 
 def setup_config(command, filename, section, vars):
-    conf = appconfig('config:' + filename)
+    conf = appconfig('config:' + filename + '#' + section.split(':')[1])
     load_environment(conf.global_conf, conf.local_conf)
 
     from twirlip.model import soClasses
