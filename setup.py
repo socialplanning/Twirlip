@@ -13,7 +13,7 @@ setup(
     #author_email='',
     #url='',
     install_requires=["Pylons>=0.9.6.1",
-                      "cookieauth",
+                      "signedheaders",
                       "CabochonServer",
                       "simplejson",
                       "wsgi_intercept",
@@ -29,7 +29,7 @@ setup(
     #        ('templates/**.mako', 'mako', None),
     #        ('public/**', 'ignore', None)]},
     dependency_links = [
-      "https://svn.openplans.org/svn/cookieauth/trunk#egg=cookieauth-dev",
+      "https://svn.openplans.org/svn/signedheaders/trunk#egg=signedheaders-dev",
       ],    
     entry_points="""
     [paste.app_factory]

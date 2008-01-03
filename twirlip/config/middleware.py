@@ -12,7 +12,7 @@ from pylons.wsgiapp import PylonsApp
 
 from twirlip.config.environment import load_environment
 
-from cookieauth.cookieauth import CookieAuth
+from signedheaders import HeaderSignatureCheckingMiddleware
 from wsseauth import WSSEAuthMiddleware
 
 def make_app(global_conf, full_stack=True, **app_conf):
@@ -64,7 +64,7 @@ def make_app(global_conf, full_stack=True, **app_conf):
         app = TestingEnv(app, users)
         app = CookieAuth(app, app_conf)
     elif app_conf.get('openplans_wrapper') == 'CookieAuth':
-        app = CookieAuth(app, app_conf)
+        app = HeaderSignatureCheckingMiddleware(app, app_conf)
 
     username = config.get('cabochon_username', None)
     password = config.get('cabochon_password', None)
