@@ -24,12 +24,17 @@ from pylons import config
 
 class ConfigController(BaseController):
     def index(self):
-        installer = ServerInstaller(".servers", config['cabochon_username'], config['cabochon_password'])
-        installer.addEvent(config['event_server'], 'create_page', h.url_for(controller='page', action='create', qualified=True))
-        installer.addEvent(config['event_server'], 'edit_page', h.url_for(controller='page', action='edit', qualified=True))
-        installer.addEvent(config['event_server'], 'delete_page', h.url_for(controller='page', action='delete', qualified=True))        
+        event_server = config['base_conf'].get('applications', 'cabochon uri')
 
-        installer.addEvent(config['event_server'], 'email_changed', h.url_for(controller='page', action='email_changed', qualified=True))
+        login_file = config['cabochon_password_file']
+        username, password = file(login_file).read().strip().split(":")
+        
+        installer = ServerInstaller(".servers", username, password)
+        
+        installer.addEvent(event_server, 'create_page', h.url_for(controller='page', action='create', qualified=True))
+        installer.addEvent(event_server, 'edit_page', h.url_for(controller='page', action='edit', qualified=True))
+        installer.addEvent(event_server, 'delete_page', h.url_for(controller='page', action='delete', qualified=True))        
+        installer.addEvent(event_server, 'email_changed', h.url_for(controller='page', action='email_changed', qualified=True))
 
 
 

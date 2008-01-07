@@ -10,6 +10,7 @@ from pylons.middleware import error_mapper, ErrorDocuments, ErrorHandler, \
     StaticJavascripts
 from pylons.wsgiapp import PylonsApp
 
+from cookieauth.cookieauth import CookieAuth
 from twirlip.config.environment import load_environment
 
 from signedheaders import HeaderSignatureCheckingMiddleware
