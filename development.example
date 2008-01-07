@@ -36,11 +36,11 @@ cabochon_password_file = cabochon_password.txt
 topp_secret_filename = /home/novalis/nz/secret.txt
 
 topp_admin_info_filename = /home/novalis/tasktracker/topp_admin_info
-openplans_instance = http://localhost:8080/openplans
+openplans uri = http://localhost:8080/openplans
 
 smtp_server = mail.openplans.org
 
-openplans_instance = http://localhost:8080/openplans
+openplans uri = http://localhost:8080/openplans
 login_uri = http://novalis:4570/login
 
 profile_uri = http://novalis:4570/people/%s/profile

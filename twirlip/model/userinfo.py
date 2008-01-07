@@ -10,8 +10,8 @@ def get_email(username):
     admin_info = tuple(file(admin_file).read().strip().split(":"))
 
     base_conf = config['base_conf']
-    server = base_conf['openplans_instance']
-                
+    server = base_conf['openplans uri']
+
     h = httplib2.Http()
     # because of some zope silliness we have to do this as a POST instead of basic auth
     data = {"__ac_name":admin_info[0], "__ac_password":admin_info[1]}
