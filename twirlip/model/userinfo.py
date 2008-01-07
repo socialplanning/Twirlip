@@ -10,7 +10,7 @@ def get_email(username):
     admin_info = tuple(file(admin_file).read().strip().split(":"))
 
     base_conf = config['base_conf']
-    server = base_conf['openplans uri']
+    server = base_conf.get('applications', 'opencore uri')
 
     h = httplib2.Http()
     # because of some zope silliness we have to do this as a POST instead of basic auth
