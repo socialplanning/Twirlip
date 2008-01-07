@@ -15,7 +15,7 @@ class WatchController(BaseController):
         try:
             page = Page.byUrl(url)
         except SQLObjectNotFound:
-            return "<html><head></head><body></body></html>" #no control
+            return "<html><head></head><body><div></div></body></html>" #no control
 
         if not page.securityContext.can_read(c.user):
             return "<html><head></head><body></body></html>"
