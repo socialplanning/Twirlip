@@ -31,8 +31,7 @@ sqlobject.dburi = mysql://twirlip:twirlip@localhost/twirlip
 
 event_server = http://localhost:24532
 
-cabochon_username = topp
-cabochon_password = secret
+cabochon_login_file = cabochon_login.txt
 
 topp_secret_filename = /home/novalis/nz/secret.txt
 

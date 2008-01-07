@@ -66,8 +66,9 @@ def make_app(global_conf, full_stack=True, **app_conf):
     elif app_conf.get('openplans_wrapper') == 'CookieAuth':
         app = HeaderSignatureCheckingMiddleware(app, app_conf)
 
-    username = config.get('cabochon_username', None)
-    password = config.get('cabochon_password', None)
+    login_file = app_conf['cabochon_password_file']
+    username, password = file(login_file).read().strip().split(":")
+
     if username:
         app = WSSEAuthMiddleware(app, {username : password}, required=False)    
 
