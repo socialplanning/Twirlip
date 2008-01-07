@@ -51,12 +51,6 @@ smtp_server = mail.openplans.org
 
 ## FIXME: should read from build.ini:
 openplans_instance = http://localhost:8080/openplans
-## FIXME: should read from build.ini:
-login_uri = http://novalis:4570/login
-
-## FIXME: should read from build.ini:
-## FIXME: also, should be URI template
-profile_uri = http://novalis:4570/people/%s/profile
 
 # If you'd like to fine-tune the individual locations of the cache data dirs
 # for the Cache data, or the Session saves, un-comment the desired settings
