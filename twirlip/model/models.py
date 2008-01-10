@@ -6,6 +6,8 @@ from sqlobject.dberrors import DuplicateEntryError
 from twirlip.lib.notification import notify
 from cookieauth.cookieauth import make_cookie
 from httplib2 import Http
+
+import datetime
  
 hub = PackageHub("twirlip", pool_connections=False)
 __connection__ = hub
@@ -69,6 +71,19 @@ class User(SQLObject):
                 AutoWatchPreference(user=self, auto_watch_class = awc)
             except DuplicateEntryError:
                 pass #we already have this preference
+            
+    def most_recent_message(self, page):
+        try:
+            message = SentMessage.selectBy(user=self, page=page).orderBy('sent DESC').limit(1)[0]
+            return message.sent
+        except IndexError:
+            return None
+
+class SentMessage(SQLObject):
+    user = ForeignKey("User")
+    page = ForeignKey("Page")
+    sent = DateTimeCol(default = datetime.datetime.now)
+    user_page_index = DatabaseIndex('user', 'page')
             
 class SecurityContext(SQLObject):
     """This represents a set of objects which share security permissions.  For
@@ -211,6 +226,7 @@ soClasses = [
     Page,
     PageClass,
     SecurityContext,
+    SentMessage,
     URLPreference,
     User
 ]
