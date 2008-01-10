@@ -1,4 +1,4 @@
-<div style="border: thin dashed black;" id="twirlip_control">
+<div class="oc-boxy" id="twirlip_control">
 <form method="POST">
 
 % if c.is_watching:
