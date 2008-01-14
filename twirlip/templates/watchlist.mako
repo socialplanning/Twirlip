@@ -43,7 +43,14 @@ ${h.secure_form(h.url_for(action="unwatch", controller="watch", qualified=True))
 % endfor
 </tbody>
 </table>
+<ul class="oc-actions oc-dataTable-actions">
+  <li>
+    <input type="submit"
+           name="task|watchlist"
+           value="Unwatch"
+           class="oc-button oc-chooseThis oc-js-actionButton" />
+  </li>
+</ul>
 </div> <!-- watch table -->
-<input type="submit" value="Unwatch" name="task|watchlist" class="oc-button oc-chooseThis" />
 </form>
 % endif
