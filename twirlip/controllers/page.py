@@ -2,7 +2,11 @@ from twirlip.lib.base import *
 from pylons.decorators.rest import dispatch_on
 from pylons.decorators import jsonify
 from simplejson import loads
+import logging
 import re
+
+log = logging.getLogger('twirlip')
+
 class PageController(BaseController):
     canonicalize_url_re = re.compile('(http://[^/]+):80')
     def _canonicalize(self, url):
@@ -84,7 +88,8 @@ class PageController(BaseController):
         url = self._canonicalize(self.params['url'])
         try:
             page = Page.selectBy(url=url)[0]
-            page.notify('delete')            
+            log.info('Delete notifications on page: %s' % page.url)
+            page.notify('delete')
             page.destroySelf()
         except IndexError:
             pass
