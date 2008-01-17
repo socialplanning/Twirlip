@@ -78,7 +78,7 @@ class TestUserController(TestController):
         form = res.forms[0]
         form['check:list'].checked = True
         res = form.submit('task|watchlist')
-        assert res.header_dict['location'] == 'http://somewhere'
+        res.mustcontain('up_') #json response now
         res = app.get(url_for(controller='user', action='watchlist'))
         assert not 'page morx fleem title' in res
         
