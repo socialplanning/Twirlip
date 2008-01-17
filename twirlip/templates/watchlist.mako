@@ -3,8 +3,6 @@
 
 ${h.secure_form(h.url_for(action="unwatch", controller="watch", qualified=True))}
 
-<input name="done_url" value="${c.done_url}" type="hidden"  action="${h.url_for()}" />
-
  <div id="watch_table"
       class="oc-widget oc-widget-dataTable oc-clearAfter">
    <h2 class="oc-toggleFold oc-dataTable-heading">
@@ -48,7 +46,7 @@ ${h.secure_form(h.url_for(action="unwatch", controller="watch", qualified=True))
     <input type="submit"
            name="task|watchlist"
            value="Unwatch"
-           class="oc-button oc-chooseThis" />
+           class="oc-button oc-chooseThis oc-js-actionButton" />
   </li>
 </ul>
 </div> <!-- watch table -->

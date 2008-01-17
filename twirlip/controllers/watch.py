@@ -38,21 +38,28 @@ class WatchController(BaseController):
     @authenticate_form
     def unwatch(self, id=None):       
         """Stop watching one or more pages.  Supports three modes of operation:
-        bulk (redirects back to a given URL),
+        bulk (returns ajax to remove rows),
         account page-ajax (returns ajax to replace for a row)
         control (returns ajax to replace the control)
         """
         #from the user's account page, bulk update
         if request.params.get('task|watchlist'):
+            commands = {}
             for id in request.params.getall('check:list'):
                 try:
                     preference = URLPreference.get(id)
                     if preference.user != c.user:
                         continue
                     preference.destroySelf()
+                    commands["up_%s" % id] =  {'action': 'delete'}
                 except SQLObjectNotFound:
                     continue
-            return redirect_to(str(request.params.get('done_url')))
+
+            num_watches = URLPreference.selectBy(user=c.user).count()
+            commands['num_watches'] = dict(action = "replace",
+                                           html = '<span id="num_watches">%d</span>' % num_watches)
+            return oc_json_response(commands)
+            
 
         #from user's account page, ajax
         if id:

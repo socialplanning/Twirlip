@@ -61,7 +61,7 @@ def make_app(global_conf, full_stack=True, **app_conf):
                  'contentmanager' : 'ProjectContentManager',
                  'admin' : 'ProjectAdmin'
                  }
-        from tasktracker.lib.testing_env import TestingEnv        
+        from twirlip.lib.testing_env import TestingEnv        
         app = TestingEnv(app, users)
         app = CookieAuth(app, app_conf)
     elif app_conf.get('openplans_wrapper') == 'CookieAuth':
