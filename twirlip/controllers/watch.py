@@ -4,6 +4,8 @@ from pylons.decorators.secure import authenticate_form
 
 from twirlip.lib.helpers import oc_json_response
 
+from urllib import quote
+
 class WatchController(BaseController):
 
     def control(self):
@@ -27,12 +29,31 @@ class WatchController(BaseController):
 
     @authenticate_form
     def watch(self):
-        url = str(request.params['url'])
-        URLPreference.create(c.user, url=url)
-        c.is_watching = True
-        c.url = url
-        return oc_json_response(
-            {"twirlip_control": {'action': 'replace', 'html' : render("/_control.mako")}})
+        """Watch one or more pages.  Two modes:
+
+        - From control, returns ajax to replace the 'watch' with the
+        'unwatch' control.
+        - From account page, return ajax to add rows for tasks'
+        """
+        #fixme: handle multiple urls
+        urls = str(request.params['url']).split("\x00")
+        preferences = []
+        for url in urls:
+            preferences.append(URLPreference.create(c.user, url=url))
+            c.url = url
+        
+        if request.params.get('undo'):
+            return oc_json_response(
+                {"watch_table": {'action': 'append',
+                                 'html' : "".join(render("/_url_preference_row.mako", preference=preference) for preference in preferences)}}
+
+                )
+        else:
+            c.is_watching = True
+            
+            return oc_json_response(
+                {"twirlip_control": {'action': 'replace',
+                                     'html' : render("/_control.mako")}})
 
 
     @authenticate_form
@@ -42,22 +63,40 @@ class WatchController(BaseController):
         account page-ajax (returns ajax to replace for a row)
         control (returns ajax to replace the control)
         """
+
+        def undo_psm(urls):
+            container = """
+<div id="oc-statusMessage-container">
+    <div class="oc-statusMessage oc-js-closeable">
+       You have just stopped watching some pages.  <a href="%s" class="oc-actionLink oc-js-actionPost">Undo this.</a>
+    </div>
+</div>"""
+            undo_url = h.secure_url_for(action='watch', url=urls, undo=1)
+            return dict(
+                action = 'replace',
+                html = container % undo_url
+                )
+
         #from the user's account page, bulk update
         if request.params.get('task|watchlist'):
             commands = {}
+            undo_list = []
             for id in request.params.getall('check:list'):
                 try:
                     preference = URLPreference.get(id)
+                    url = preference.page.url
                     if preference.user != c.user:
                         continue
                     preference.destroySelf()
                     commands["up_%s" % id] =  {'action': 'delete'}
+                    undo_list.append(url)
                 except SQLObjectNotFound:
                     continue
 
             num_watches = URLPreference.selectBy(user=c.user).count()
             commands['num_watches'] = dict(action = "replace",
                                            html = '<span id="num_watches">%d</span>' % num_watches)
+            commands['oc-statusMessage-container'] = undo_psm("\0".join(undo_list))
             return oc_json_response(commands)
             
 
