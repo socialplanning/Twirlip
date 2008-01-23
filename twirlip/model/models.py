@@ -88,7 +88,7 @@ class SentMessage(SQLObject):
 class SecurityContext(SQLObject):
     """This represents a set of objects which share security permissions.  For
     example, all tasks on a task list share the same security."""
-    url = StringCol(length=512)
+    url = StringCol(length=333)
     
     url_index = DatabaseIndex('url', unique=True)
 
@@ -113,7 +113,7 @@ class SecurityContext(SQLObject):
     
 class Page(SQLObject):
     """This represents a URL that can be watched."""
-    url = StringCol(length=512, alternateID=True)
+    url = StringCol(length=333, alternateID=True)
     title = StringCol() #usually something like ${Project}: ${page_or_task_name}
     securityContext = ForeignKey("SecurityContext")
 
