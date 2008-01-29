@@ -99,6 +99,7 @@ class SecurityContext(SQLObject):
         except IndexError:
             return cls(url=url)
 
+    #FIXME: globally memoize this.
     def can_read(self, user):
         #make a http request to url as user.
         cookie = make_cookie(user.username)

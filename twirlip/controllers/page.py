@@ -35,7 +35,8 @@ class PageController(BaseController):
             page = Page.selectBy(url=url)[0]
             page.set(title = self.params['title'], securityContext = context)
 
-        self._set_up_autowatches(page)
+        if not self.params.get('no_autowatches'):
+            self._set_up_autowatches(page)
 
         page.notify('create')
         

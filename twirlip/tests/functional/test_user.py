@@ -12,8 +12,6 @@ class TestUserController(TestController):
 
     def test_config(self):
         app = self.get_app('admin')
-        response = app.get(url_for(controller='config', action='index'))
-        response.mustcontain('configured')
         
         response = app.get(url_for(controller='user', action='preferences'))
         response.mustcontain('a task is assigned to me')
