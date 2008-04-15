@@ -11,7 +11,7 @@ messages = dict(
         ),
     create = dict(
         subject = 'Page created - %(title)s',
-        body = """The page %(title)s has been deleted.
+        body = """The page %(title)s has been created.
 %(unsubscribe)s"""    
         ),
     unsubscribe = dict(
