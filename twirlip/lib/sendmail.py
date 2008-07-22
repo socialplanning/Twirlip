@@ -31,7 +31,7 @@ def send_mail(sender, to, subject, body):
     message["To"] = to
     message["From"] = sender
     message["Subject"] = subject
-    message.set_payload(body)
+    message.set_payload(body.encode('utf-8'))
     server = open_server()
     try:
         server.sendmail(sender, to, message.as_string())
