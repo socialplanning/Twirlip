@@ -40,16 +40,7 @@ def make_app(global_conf, full_stack=True, **app_conf):
     # The Pylons WSGI app
     app = PylonsApp()
 
-    # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
-
-    if asbool(full_stack):
-        # Handle Python exceptions
-        app = ErrorHandler(app, global_conf, error_template=error_template,
-                           **config['pylons.errorware'])
-
-        # Display error documents for 401, 403, 404 status codes (and
-        # 500 when debug is disabled)
-        app = ErrorDocuments(app, global_conf, mapper=error_mapper, **app_conf)
+    # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)   
 
     # Establish the Registry for this application
     app = RegistryManager(app)
@@ -73,8 +64,21 @@ def make_app(global_conf, full_stack=True, **app_conf):
     if username:
         app = WSSEAuthMiddleware(app, {username : password}, required=False)    
 
+    if asbool(full_stack):
+        # Handle Python exceptions
+        app = ErrorHandler(app, global_conf, error_template=error_template,
+                           **config['pylons.errorware'])
+
+        # Display error documents for 401, 403, 404 status codes (and
+        # 500 when debug is disabled)
+        app = ErrorDocuments(app, global_conf, mapper=error_mapper, **app_conf)
+
+
     # Static files
     javascripts_app = StaticJavascripts()
     static_app = StaticURLParser(config['pylons.paths']['static_files'])
     app = Cascade([static_app, javascripts_app, app])
+
+    #from supervisorerrormiddleware import SupervisorErrorMiddleware
+    #app = SupervisorErrorMiddleware(app)
     return app
