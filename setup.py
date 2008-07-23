@@ -19,6 +19,7 @@ setup(
                       "wsgi_intercept",
                       "httplib2",
                       "SQLObject",
+                      "SupervisorErrorMiddleware"
                       ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
@@ -30,6 +31,7 @@ setup(
     #        ('public/**', 'ignore', None)]},
     dependency_links = [
       "https://svn.openplans.org/svn/signedheaders/trunk#egg=signedheaders-dev",
+      "https://svn.openplans.org/svn/SupervisorErrorMiddleware/trunk#egg=SupervisorErrorMiddleware-dev",
       ],    
     entry_points="""
     [paste.app_factory]

@@ -14,6 +14,7 @@ from cookieauth.cookieauth import CookieAuth
 from twirlip.config.environment import load_environment
 
 from signedheaders import HeaderSignatureCheckingMiddleware
+from supervisorerrormiddleware import SupervisorErrorMiddleware
 from wsseauth import WSSEAuthMiddleware
 
 def make_app(global_conf, full_stack=True, **app_conf):
@@ -64,6 +65,8 @@ def make_app(global_conf, full_stack=True, **app_conf):
     if username:
         app = WSSEAuthMiddleware(app, {username : password}, required=False)    
 
+    app = SupervisorErrorMiddleware(app)
+
     if asbool(full_stack):
         # Handle Python exceptions
         app = ErrorHandler(app, global_conf, error_template=error_template,
@@ -79,6 +82,4 @@ def make_app(global_conf, full_stack=True, **app_conf):
     static_app = StaticURLParser(config['pylons.paths']['static_files'])
     app = Cascade([static_app, javascripts_app, app])
 
-    #from supervisorerrormiddleware import SupervisorErrorMiddleware
-    #app = SupervisorErrorMiddleware(app)
     return app
