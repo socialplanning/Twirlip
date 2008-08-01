@@ -1,17 +1,17 @@
 messages = dict(
     update = dict(
         subject = 'Update notification - %(title)s',
-        body = """The page %(title)s has been updated.  \nGo to %(url)s to see it.
+        body = """%(title)s has been updated.  \nGo to %(url)s to see it.
 %(unsubscribe)s"""
         ),
     delete = dict(
         subject = 'Delete notification - %(title)s',
-        body = """The page %(title)s has been deleted.
+        body = """%(title)s has been deleted.
 %(unsubscribe)s"""    
         ),
     create = dict(
-        subject = 'Page created - %(title)s',
-        body = """The page %(title)s has been created.
+        subject = '%(title)s has been created.',
+        body = """%(title)s has been created.  Go to %(url)s to see it.
 %(unsubscribe)s"""    
         ),
     unsubscribe = dict(
