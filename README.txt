@@ -1,5 +1,9 @@
-This file is for you to describe the Twirlip application. Typically
-you would include information such as the information below:
+Twirlip accepts Cabochon messages repesenting page creation and edits,
+and sends email to people subscribed to these events.  It also
+provides an interface for subscription/unsubscription, which is
+intended to be transcluded (or maybe scripttranscluded) into Opencore,
+although it could be used more broadly.
+
 
 Installation and Setup
 ======================
