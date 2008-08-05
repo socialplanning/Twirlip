@@ -19,7 +19,8 @@ def create_defaults():
         Task = ['assign', 'comment', 'delete', 'attribute']
         )
 
-    auto_watch_classes = [('task_assigned', 'a task is assigned to me')]
+    auto_watch_classes = [('task_assigned', 'a task is assigned to me'),
+                          ('page_edited', 'I create or edit a wiki page')]
 
     for method in notification_methods:
         try:
