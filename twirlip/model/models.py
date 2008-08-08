@@ -106,7 +106,7 @@ class SecurityContext(SQLObject):
         headers = dict(Cookie = "%s=%s" % cookie)
         http = Http() #fixme: globalize this so I can use keepalive
         http.follow_redirects = True
-        response, content = http.request(self.url, headers=headers, method="HEAD")
+        response, content = http.request(self.url, headers=headers)
         return response.status == 200
         
 
