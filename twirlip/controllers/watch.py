@@ -14,13 +14,15 @@ class WatchController(BaseController):
         except KeyError:
             url = request.params['url']
 
-        try:
-            page = Page.byUrl(url)
-        except SQLObjectNotFound:
-            return "<html><head></head><body><div><!-- twirlip: no such page --></div></body></html>" #no control
+        #we're going to trust that the user can view this page, since this is just to display
+        #the control.
+        #try:
+        #    page = Page.byUrl(url)
+        #except SQLObjectNotFound:
+        #    return "<html><head></head><body><div><!-- twirlip: no such page --></div></body></html>" #no control
 
-        if not page.securityContext.can_read(c.user):
-            return "<html><head></head><body><div><!-- twirlip: can't access page --></div></body></html>"
+        #if not page.securityContext.can_read(c.user):
+        #    return "<html><head></head><body><div><!-- twirlip: can't access page --></div></body></html>"
         
         pref = URLPreference.lookup(c.user, url)
         c.is_watching = bool(pref)
