@@ -107,8 +107,6 @@ class TestUserController(TestController):
         #check that the control is empty
         res = app.get(url_for(controller='watch', action='control'), extra_environ=dict(HTTP_X_TRANSCLUDED='http://morx.example.com/nogo'))
 
-        assert res.body == "<html><head></head><body><div><!-- twirlip: can't access page --></div></body></html>"
-
         #try to watch
         res = app.post(url_for(controller='watch', action='watch', url='http://morx.example.com/nogo'), params={secure_form_tag.token_key : token})
 
