@@ -12,7 +12,7 @@ setup(
     #author='',
     #author_email='',
     #url='',
-    install_requires=["Pylons>=0.9.6.1",
+    install_requires=["Pylons==0.9.6.2",
                       "signedheaders",
                       "CabochonServer",
                       "simplejson",
