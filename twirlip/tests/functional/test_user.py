@@ -19,6 +19,7 @@ class TestUserController(TestController):
         #a task is assigned to me
         form = response.forms[0]
         form['awc_task_assigned'].checked = False
+        form['awc_page_edited'].checked = False
         response = form.submit().follow()
         
         assert 'checked' not in response.body
