@@ -19,7 +19,8 @@ setup(
                       "wsgi_intercept",
                       "httplib2",
                       "SQLObject",
-                      "SupervisorErrorMiddleware"
+                      "SupervisorErrorMiddleware",
+                      "wsgiutils",
                       ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
