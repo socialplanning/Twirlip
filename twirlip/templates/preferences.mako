@@ -4,7 +4,7 @@
    ${h.hidden_authenticator()}
    <fieldset>
      <legend class="oc-legend-label">
-       <a href="#" class="oc-js-expander_open oc-expanderLink">Notification preferences</a>
+       <a href="${h.url_for(qualified=True)}" class="oc-js-expander_open oc-expanderLink">Notification preferences</a>
     </legend>
 
 <ul class="oc-js-expander-content oc-expander-content oc-plainList">
@@ -23,7 +23,7 @@ Subscribe me to events automatically when ${awc.display_name}
 </li>
 % endfor
 
-<li><input type="submit" value="Change" name="task|preferences" class="oc-button oc-chooseThis"> or <a href="#" class="oc-js-expander_close">Cancel</a> 
+<li><input type="submit" value="Change" name="task|preferences" class="oc-button oc-chooseThis"> or <a href="${h.url_for(qualified=True)}" class="oc-js-expander_close">Cancel</a> 
 </li>
 </ul>
 
