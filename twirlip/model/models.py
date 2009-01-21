@@ -118,10 +118,10 @@ class Page(SQLObject):
     title = UnicodeCol() #usually something like ${Project}: ${page_or_task_name}
     securityContext = ForeignKey("SecurityContext")
 
-    def notify(self, event_type):
+    def notify(self, event_type, params):
         for pref in URLPreference.selectBy(page=self):
             user = pref.user
-            notify(pref.notification_method.name, user, self, event_type)
+            notify(pref.notification_method.name, user, self, event_type, params)
 
     def destroySelf(self):
         for pref in URLPreference.selectBy(page=self):

@@ -38,7 +38,7 @@ class PageController(BaseController):
         if not self.params.get('no_autowatches'):
             self._set_up_autowatches(page)
 
-        page.notify('create')
+        page.notify('create', self.params)
         
         return {'status' : 'accepted'}
 
@@ -62,7 +62,7 @@ class PageController(BaseController):
                 User.get_or_create(username)
 
         self._set_up_autowatches(page)
-        page.notify('update')
+        page.notify('update', self.params)
         
         return {'status' : 'accepted'}
 
@@ -90,7 +90,7 @@ class PageController(BaseController):
         try:
             page = Page.selectBy(url=url)[0]
             log.info('Delete notifications on page: %s' % page.url)
-            page.notify('delete')
+            page.notify('delete', self.params)
             page.destroySelf()
         except IndexError:
             pass

@@ -3,12 +3,13 @@ from twirlip.lib.messages import messages
 
 import datetime 
 
-def email(user, page, event_type):
+def email(user, page, event_type, params):
     if not user.email:
         return
 
     message = messages[event_type]
     page_dict = page.sqlmeta.asDict()
+    page_dict['updater'] = params['user']
     page_dict['unsubscribe'] = messages['unsubscribe']['body'] % dict(user = user.username)
     subject = message['subject'] % page_dict
     body = message['body'] % page_dict
@@ -18,7 +19,7 @@ def email(user, page, event_type):
 
 notification_methods = {'Email' : email}
 
-def notify(method, user, page, event_type):
+def notify(method, user, page, event_type, params):
     """Tell a user that an event to which they are subscribed
     has occurred.  Avoid notifying a user too often per page."""
 
