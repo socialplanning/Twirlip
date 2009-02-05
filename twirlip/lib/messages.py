@@ -1,17 +1,24 @@
 messages = dict(
     update = dict(
-        subject = 'Update notification - %(title)s - %(updater)',
-        body = """%(title)s has been updated.  \nGo to %(url)s to see it.
+        subject = 'Update notification - %(title)s - %(updater)s',
+        body = """%(title)s has been updated by %(updater)s.  
+
+Go to %(url)s to see it.
+
 %(unsubscribe)s"""
         ),
     delete = dict(
-        subject = 'Delete notification - %(title) - %(updater)s',
-        body = """%(title)s has been deleted.
+        subject = 'Delete notification - %(title)s - %(updater)s',
+        body = """%(title)s has been deleted by %(updater)s.
+
 %(unsubscribe)s"""    
         ),
     create = dict(
-        subject = '%(title)s has been created - %(updater)',
-        body = """%(title)s has been created.  Go to %(url)s to see it.
+        subject = '%(title)s has been created - %(updater)s',
+        body = """%(title)s has been created by %(updater)s. 
+ 
+Go to %(url)s to see it.
+
 %(unsubscribe)s"""    
         ),
     unsubscribe = dict(
