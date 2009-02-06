@@ -27,5 +27,5 @@ def notify(method, user, page, event_type, params):
     if last_message and datetime.datetime.now() - last_message > datetime.timedelta(0, 300):
         return #too soon
     
-    notification_methods[method](user, page, event_type)
+    notification_methods[method](user, page, event_type, params)
 
