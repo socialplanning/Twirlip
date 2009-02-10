@@ -7,7 +7,7 @@ from webhelpers import *
 from twirlip.model import *
 from simplejson import dumps
 from paste.wsgiwrappers import WSGIResponse
-from webhelpers.rails import secure_form_tag, secure_form
+from webhelpers.rails import secure_form_tag, secure_form, link_to
 from pylons.controllers.util import url_for
 
 def notification_dropdown(name, selected=None):
