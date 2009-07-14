@@ -24,7 +24,7 @@ Go to %(url)s to see it.
     unsubscribe = dict(
         subject = 'unsubscribe message',
         body = """To unsubscribe from these messages, visit
-http://www.openplans.org/people/%(user)s/account.
+http://www.coactivate.org/people/%(user)s/account.
     """
         )
     )
