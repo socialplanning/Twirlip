@@ -1,14 +1,13 @@
-<div class="oc-boxy" id="twirlip_control">
-<form method="POST">
+<form method="POST" id="twirlip_control">
 
 % if c.is_watching:
 
-You're watching this.  <a href="${h.secure_url_for(action='unwatch', url=c.url, qualified=True)}" class="oc-actionLink oc-js-actionPost">Stop watching it?</a>
+<a href="${h.secure_url_for(action='unwatch', url=c.url, qualified=True)}" class="oc-js-actionPost">Unwatch</a>
 
 % else:
 
-You're not watching this.  <a href="${h.secure_url_for(action='watch', url=c.url, qualified=True)}" class="oc-actionLink oc-js-actionPost">Watch it?</a>
+<a href="${h.secure_url_for(action='watch', url=c.url, qualified=True)}" class="oc-js-actionPost">Watch</a>
 
 % endif
 </form>
-</div>
+
