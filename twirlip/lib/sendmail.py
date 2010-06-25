@@ -35,8 +35,9 @@ def send_mail(sender, to, subject, body):
     server = open_server()
     try:
         server.sendmail(sender, to, message.as_string())
-    except smtplib.SMTPRecipientsRefused:
-        warn("unable to send mail to %s" % to) 
+    except smtplib.SMTPRecipientsRefused, e:
+        from pprint import pformat
+        warn("%r: unable to send mail to %s" % (pformat(e.recipients), to)) 
     server.quit()
 
 def open_server():
