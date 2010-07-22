@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='Twirlip',
-    version="0.1",
+    version="0.6",
     #description='',
     #author='',
     #author_email='',
