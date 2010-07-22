@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='Twirlip',
-    version="0.6",
+    version="0.7-dev",
     description='pylons app for changed-content notifications in opencore',
     author='David Turner',
     author_email='opencore-dev@lists.coactivate.org',
