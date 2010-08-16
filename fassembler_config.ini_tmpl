@@ -24,7 +24,7 @@ prefix = /notification
 [app:main_app]
 use = egg:Twirlip
 full_stack = true
-cache_dir = {{env.base_path}}/twirlip/var/data
+cache_dir = {{env.var}}/twirlip/data
 beaker.session.key = twirlip
 ## FIXME: should be auto-generated
 beaker.session.secret = somesecret
@@ -41,7 +41,7 @@ topp_secret_filename = {{env.config.get('general', 'topp_secret_filename')}}
 topp_admin_info_filename = {{env.config.get('general', 'admin_info_filename')}}
 
 ## FIXME: should read from build.ini:
-smtp_server = mail.openplans.org
+smtp_server = localhost
 
 # If you'd like to fine-tune the individual locations of the cache data dirs
 # for the Cache data, or the Session saves, un-comment the desired settings
