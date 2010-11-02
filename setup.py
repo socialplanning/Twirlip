@@ -32,10 +32,6 @@ setup(
     #        ('**.py', 'python', None),
     #        ('templates/**.mako', 'mako', None),
     #        ('public/**', 'ignore', None)]},
-    dependency_links = [
-      "https://svn.openplans.org/svn/signedheaders/trunk#egg=signedheaders-dev",
-      "https://svn.openplans.org/svn/SupervisorErrorMiddleware/trunk#egg=SupervisorErrorMiddleware-dev",
-      ],    
     entry_points="""
     [paste.app_factory]
     main = twirlip.config.middleware:make_app
