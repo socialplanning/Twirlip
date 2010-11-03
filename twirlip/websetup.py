@@ -21,7 +21,9 @@ def setup_config(command, filename, section, vars):
 
     constraints = []
     for table in soClasses:
-        constraints += table.createTable(ifNotExists=True, applyConstraints=False)
+        _constraints = table.createTable(ifNotExists=True, applyConstraints=False)
+        if _constraints is not None:
+            constraints += _constraints
 
     connection = hub.hub.getConnection()
     for constraint in constraints:
