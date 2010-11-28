@@ -14,7 +14,7 @@ def email(user, page, event_type, params):
     subject = message['subject'] % page_dict
     body = message['body'] % page_dict
 
-    send_mail ('notification@openplans.org', user.email, subject, body)
+    send_mail ('greetings@coactivate.org', user.email, subject, body)
 
 
 notification_methods = {'Email' : email}
