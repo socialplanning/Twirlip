@@ -21,7 +21,7 @@ setup(
                       "httplib2",
                       "SQLObject",
                       "SupervisorErrorMiddleware",
-                      "wsgiutils",
+                      "WSGIUtils",
                       "WebOb",
                       ],
     packages=find_packages(exclude=['ez_setup']),
